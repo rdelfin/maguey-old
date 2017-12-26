@@ -1,0 +1,14 @@
+Source: maguey
+Section: devel
+Priority: optional
+Maintainer: Ricardo Delfin <ricardo.delfin.garcia@gmail.com>
+Build-Depends: cmake, build-essential, libglfw3-dev, libsoil-dev, libglew-dev
+Homepage: https://rdelfin.com
+
+Package: maguey
+Architecture: any
+Depends: 
+Description: A simple C++ Game Engine
+ This game engine uses GLFW, SOIL and GLEW to
+ provide an easy-to-use wrapper around OpenGL
+ and GLFW.
