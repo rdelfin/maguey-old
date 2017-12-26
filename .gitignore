@@ -1,0 +1,55 @@
+# Created by .ignore support plugin (hsz.mobi)
+### CMake template
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+build/
+cmake-build-debug/
+
+### C++ template
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+# .obj   # Also file extension for our 3D models
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDEA
+.idea/
+
+# VS Code
+.vscode/
+=======
+# Downloaded repos
+third-party/
+
