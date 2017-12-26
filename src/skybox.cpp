@@ -8,10 +8,10 @@
 #include <GLFW/glfw3.h>
 
 #include <SOIL/SOIL.h>
-#include <boids/debuggl.h>
+#include <maguey/debuggl.h>
 #include <iostream>
 
-#include "boids/skybox.h"
+#include <maguey/skybox.h>
 
 const std::string Skybox::VERTEX_VBO_NAME = "vertex_position";
 const std::string Skybox::FRAGMENT_COLOR_NAME = "vertex_color";

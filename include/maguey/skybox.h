@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 
-#include <boids/program.h>
-#include <boids/camera.h>
+#include <maguey/program.h>
+#include <maguey/camera.h>
 
 // File definitions
 #define CUBEMAP_FRAG_SHADER "resources/shaders/skybox.frag"

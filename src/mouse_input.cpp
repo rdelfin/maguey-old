@@ -4,7 +4,7 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <boids/mouse_input.h>
+#include <maguey/mouse_input.h>
 
 void MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);

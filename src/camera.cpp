@@ -4,7 +4,7 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <boids/camera.h>
+#include <maguey/camera.h>
 
 
 #include <glm/glm.hpp>

@@ -8,8 +8,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include <boids/debuggl.h>
-#include <boids/game.h>
+#include <maguey/debuggl.h>
+#include <maguey/game.h>
 
 #include <iostream>
 #include <string>

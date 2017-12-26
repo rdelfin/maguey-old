@@ -8,10 +8,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include <boids/debuggl.h>
-#include <boids/triangle_mesh.h>
-#include <boids/mesh_loader.h>
-#include <boids/program.h>
+#include <maguey/debuggl.h>
+#include <maguey/triangle_mesh.h>
+#include <maguey/mesh_loader.h>
+#include <maguey/program.h>
 
 #include <iostream>
 #include <vector>

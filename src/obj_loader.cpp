@@ -4,8 +4,8 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <boids/obj_loader.h>
-#include <boids/util.h>
+#include <maguey/obj_loader.h>
+#include <maguey/util.h>
 
 #include <fstream>
 #include <sstream>

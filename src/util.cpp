@@ -4,7 +4,7 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <boids/util.h>
+#include <maguey/util.h>
 
 #include <sstream>
 #include <string>

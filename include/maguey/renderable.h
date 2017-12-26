@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <boids/program.h>
+#include <maguey/program.h>
 
 class Renderable {
 public:

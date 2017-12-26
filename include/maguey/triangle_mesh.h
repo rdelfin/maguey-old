@@ -11,10 +11,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <boids/camera.h>
-#include <boids/mesh_loader.h>
-#include <boids/renderable.h>
-#include <boids/program.h>
+#include <maguey/camera.h>
+#include <maguey/mesh_loader.h>
+#include <maguey/renderable.h>
+#include <maguey/program.h>
 
 // TODO: Either disallow copy or regenerate data sources on copy
 class TriangleMesh : public Renderable {

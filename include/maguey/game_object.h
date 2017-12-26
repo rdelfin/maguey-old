@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include <boids/game_time.h>
-#include <boids/mesh_loader.h>
-#include <boids/triangle_mesh.h>
+#include <maguey/game_time.h>
+#include <maguey/mesh_loader.h>
+#include <maguey/triangle_mesh.h>
 
 
 // TODO: Implement equals operator to either create a copy of the vector and remove from the one being copied, to disable it, or switch to shared_ptr

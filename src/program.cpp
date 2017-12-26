@@ -9,11 +9,11 @@
 #include <GL/glew.h>
 #include <vector>
 #include <fstream>
-#include <boids/debuggl.h>
+#include <maguey/debuggl.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include <boids/program.h>
+#include <maguey/program.h>
 
 
 /*============================================================================================================

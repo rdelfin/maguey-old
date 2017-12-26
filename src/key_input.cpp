@@ -4,7 +4,7 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <boids/key_input.h>
+#include <maguey/key_input.h>
 
 bool KEY_STATES[TOTAL_KEYS];
 static bool KEYS_BINDED = false;

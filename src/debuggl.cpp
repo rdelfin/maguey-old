@@ -1,7 +1,7 @@
 #define GLM_FORCE_RADIANS
 
-#include <boids/debuggl.h>
-#include <boids/portable_gl.h>
+#include <maguey/debuggl.h>
+#include <maguey/portable_gl.h>
 
 const char* DebugGLErrorToString(int error) {
 	switch (error) {
