@@ -10,6 +10,9 @@ message(STATUS "maguey added")
 target_link_libraries(maguey ${stdgl_libraries})
 target_link_libraries(maguey SOIL) # TODO: Find a better solution
 
-install(TARGETS maguey DESTINATION lib)
-install(DIRECTORY ${pwd}/../include/ DESTINATION include)
+install(TARGETS maguey
+        EXPORT magueyTargets
+        DESTINATION lib)
+install(DIRECTORY ${pwd}/../include/
+        DESTINATION include)
 
