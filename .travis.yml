@@ -59,7 +59,7 @@ script:
     ############################################################################
      - mkdir -p build
      - cd build
-     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} .. 
+     - cmake ${CMAKE_OPTIONS} -DBUILD_TESTS=ON -DCMAKE_CXX_FLAGS=${CXX_FLAGS} .. 
      - make
      - ctest
 
