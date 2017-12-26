@@ -3,7 +3,7 @@ language: cpp
 env:
   global:
     # Ubuntu version
-    - LINUX_DIST=xenial
+    - LINUX_DIST=trusty
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
     - CXX_FLAGS=""
@@ -14,7 +14,7 @@ env:
 matrix:
   include:
     - os: linux
-      dist: xenial
+      dist: trusty
       sudo: true
       compiler: gcc
       addons:
@@ -22,12 +22,8 @@ matrix:
          packages: &precise_latest_boost_packages
            - gcc-4.8
            - g++-4.8
-           #- gcov-4.9
            - clang-3.7
            - valgrind
-           # Misc
-           - python-yaml
-           - libopencv-dev
            # OpenGL
            - libglfw3-dev
            - libglew-dev
