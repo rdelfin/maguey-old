@@ -25,11 +25,12 @@ matrix:
            - clang-3.7
            - valgrind
            # OpenGL
-           - libglfw3-dev
            - libglew-dev
+           - libglfw3-dev
          sources: &precise_latest_boost_sources
            - ubuntu-toolchain-r-test
            - llvm-toolchain-precise-3.7
+           - sourceline: 'deb http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main'
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
@@ -60,3 +61,4 @@ script:
      - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} .. 
      - make
      - ctest
+
