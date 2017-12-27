@@ -1,5 +1,5 @@
-maguey (1.0.0) oneiric; urgency=low
+maguey (1.0.0) xenial; urgency=low
 
   * Initial upload
 
- -- Ricardo Delfin <ricardo.delfin.garcia@gmail.com>  Tue, 26 Dec 2017 15:59:25 -0600
+ -- Ricardo Delfin Garcia <ricardo.delfin.garcia@gmail.com>  Tue, 26 Dec 2017 15:59:25 -0600
