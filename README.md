@@ -1,4 +1,4 @@
-# maguey
+# Maguey
 
 ![Build Status](https://travis-ci.org/rdelfin/maguey.svg?branch=master)
 
@@ -54,7 +54,7 @@ Alternatively you can use `sudo make install` to install the built files with th
 
 ## Adding to CMake
 
-Once you've installed this package, you can add this to your CMakeLists.txt by adding:
+Once you've installed this package, you can add this to your `CMakeLists.txt` by adding:
 
 ```cmake
 find_package(maguey REQUIRED)
