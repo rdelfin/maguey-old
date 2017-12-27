@@ -1,5 +1,5 @@
-maguey (1.0.3) xenial; urgency=low
+maguey (1.0.4) xenial; urgency=low
 
-  * Removed remenant from greet-the-world example in rules file
+  * Fixed magueyConfig.cmake.in to use current version
 
  -- Ricardo Delfin Garcia <ricardo.delfin.garcia@gmail.com>  Tue, 26 Dec 2017 22:16:57 -0600
