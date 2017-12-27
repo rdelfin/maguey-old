@@ -26,7 +26,7 @@ cmake ..
 make
 ```
 
-You will find the binaries inside the `bin` directory. Alternatively, if you want to also build the tests, run:
+Alternatively, if you want to also build the tests, run:
 
 ```bash
 cd maguey
