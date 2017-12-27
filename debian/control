@@ -2,7 +2,7 @@ Source: maguey
 Section: devel
 Priority: optional
 Maintainer: Ricardo Delfin Garcia <ricardo.delfin.garcia@gmail.com>
-Build-Depends: cmake, build-essential, libglfw3-dev, libsoil-dev, libglew-dev, pkg-config
+Build-Depends: cmake, build-essential, libglfw3-dev, libsoil-dev, libglew-dev, pkg-config, libglm-dev
 Homepage: https://rdelfin.com
 
 Package: maguey
