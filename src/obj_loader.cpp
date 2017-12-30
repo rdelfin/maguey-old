@@ -16,8 +16,9 @@ ObjLoader::ObjLoader() {
 
 }
 
-bool ObjLoader::loadFile(const std::string &path, std::vector<glm::vec4> &vertices, std::vector<glm::vec4> &normals,
-                         std::vector<glm::uvec3> &faces) const {
+bool ObjLoader::loadString(const std::string &contents,
+                           std::vector<glm::vec4> &vertices, std::vector<glm::vec4> &normals,
+                           std::vector<glm::uvec3> &faces) const {
     // Clear out all vectors to keep at same length
     vertices.clear();
     normals.clear();
@@ -28,14 +29,10 @@ bool ObjLoader::loadFile(const std::string &path, std::vector<glm::vec4> &vertic
     std::vector<glm::vec4> normalRaw;
     std::vector<glm::uvec3> normalIdx;
 
-    std::ifstream fileStream(path);
-
-    if(!fileStream)
-        return false;
-
+    std::stringstream ss(contents);
     std::string line;
 
-    while(std::getline(fileStream, line)) {
+    while(std::getline(ss, line)) {
         if(line[0] == 'v' && line[1] == ' ') {
             std::stringstream lineStream(line);
 

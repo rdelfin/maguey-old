@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -21,7 +22,21 @@ public:
 
     virtual bool loadFile(const std::string& path,
                           std::vector<glm::vec4>& vertices, std::vector<glm::vec4>& normals,
-                          std::vector<glm::uvec3>& faces) const = 0;
+                          std::vector<glm::uvec3>& faces) const {
+
+        std::ifstream fileStream(path);
+
+        if(!fileStream)
+            return false;
+        
+        std::string fileContents = std::string(std::istreambuf_iterator<char>(fileStream),
+                                               std::istreambuf_iterator<char>());
+        return loadString(fileContents, vertices, normals, faces);
+    }
+    
+    virtual bool loadString(const std::string& contents,
+                            std::vector<glm::vec4>& vertices, std::vector<glm::vec4>& normals,
+                            std::vector<glm::uvec3>& faces) const = 0;
 
     ~MeshLoader() {
 

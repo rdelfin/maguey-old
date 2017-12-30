@@ -16,9 +16,9 @@
 class ObjLoader : public MeshLoader {
 public:
     ObjLoader();
-    virtual bool loadFile(const std::string& path,
-                          std::vector<glm::vec4>& vertices, std::vector<glm::vec4>& normals,
-                          std::vector<glm::uvec3>& faces) const;
+    virtual bool loadString(const std::string& contents,
+                            std::vector<glm::vec4>& vertices, std::vector<glm::vec4>& normals,
+                            std::vector<glm::uvec3>& faces) const;
     ~ObjLoader();
 };
 
