@@ -83,8 +83,8 @@ bool ObjLoader::loadString(const std::string &contents,
                         y = std::stoul(yElems[0]);
                         z = std::stoul(zElems[0]);
 
-                        facesRaw.push_back(glm::uvec3(z - 1, y - 1, x - 1));
-                        normalIdx.push_back(glm::uvec3(z - 1, y - 1, x - 1));
+                        facesRaw.push_back(glm::uvec3(x - 1, y - 1, z - 1));
+                        normalIdx.push_back(glm::uvec3(x - 1, y - 1, z - 1));
                     } else if (xElems.size() == 3) {
                         unsigned long xFace, yFace, zFace, xNormal, yNormal, zNormal;
                         xFace = std::stoul(xElems[0]);
