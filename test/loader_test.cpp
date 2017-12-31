@@ -51,24 +51,48 @@ public:
     }
 };
 
+typedef std::set<glm::vec4, vec_less_than<glm::vec4>>   vec4_set;
+typedef std::set<glm::uvec3, vec_less_than<glm::uvec3>> uvec3_set;
+
 // Basic object file test with one triangle, with one element faces
 TEST(OneTriangleSimpleTest, ObjectLoaderTest) {
     ObjLoader loader;
     std::vector<glm::vec4> vertices, normals;
     std::vector<glm::uvec3> faces;
 
-    std::set<glm::vec4, vec_less_than<glm::vec4> > true_verts = {glm::vec4(1, 0, 0, 1), glm::vec4(0, 1, 0, 1), glm::vec4(0, 0, 1, 1)};
-    std::set<glm::vec4, vec_less_than<glm::vec4> > true_normals = {glm::vec4(1.732050808, 1.732050808, 1.732050808, 0),
+    vec4_set true_verts = {glm::vec4(1, 0, 0, 1), glm::vec4(0, 1, 0, 1), glm::vec4(0, 0, 1, 1)};
+    vec4_set true_normals = {glm::vec4(1.732050808, 1.732050808, 1.732050808, 0),
                                            glm::vec4(1.732050808, 1.732050808, 1.732050808, 0),
                                            glm::vec4(1.732050808, 1.732050808, 1.732050808, 0)};
-    std::set<glm::uvec3, vec_less_than<glm::uvec3>> true_faces = {glm::uvec3(0, 1, 2)};
+    uvec3_set true_faces = {glm::uvec3(0, 1, 2)};
 
     ASSERT_TRUE(loader.loadString(oneTrigObjFile, vertices, normals, faces));
 
-    std::set<glm::vec4, vec_less_than<glm::vec4>> verts_set(vertices.begin(), vertices.end());
-    std::set<glm::vec4, vec_less_than<glm::vec4>> normals_set(normals.begin(), normals.end());
-    std::set<glm::uvec3, vec_less_than<glm::uvec3>> faces_set(faces.begin(), faces.end());
+    vec4_set verts_set(vertices.begin(), vertices.end());
+    vec4_set normals_set(normals.begin(), normals.end());
+    uvec3_set faces_set(faces.begin(), faces.end());
 
+    ASSERT_EQ(verts_set, true_verts);
+    ASSERT_EQ(normals_set, true_normals);
+    ASSERT_EQ(faces_set, true_faces);
+}
+
+// Object file test with a two-triangle square, with one element faces
+TEST(SquareSimpleTest, ObjectLoaderTest) {
+    ObjLoader loader;
+    std::vector<glm::vec4> vertices, normals;
+    std::vector<glm::uvec3> faces;
+
+    vec4_set true_verts = { glm::vec4(0, 0, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec4(0, 0, 1, 1), glm::vec4(1, 0, 1, 1) };
+    vec4_set true_normals = { glm::vec4(0, 1, 0, 0), glm::vec4(0, 1, 0, 0), glm::vec4(0, 1, 0, 0), glm::vec4(0, 1, 0, 0) };
+    uvec3_set true_faces = { glm::uvec3(0, 1, 2), glm::uvec3(3, 4, 5) };
+
+    ASSERT_TRUE(loader.loadString(squareObjFile, vertices, normals, faces));
+
+    vec4_set verts_set(vertices.begin(), vertices.end());
+    vec4_set normals_set(normals.begin(), normals.end());
+    uvec3_set faces_set(faces.begin(), faces.end());
+    
     ASSERT_EQ(verts_set, true_verts);
     ASSERT_EQ(normals_set, true_normals);
     ASSERT_EQ(faces_set, true_faces);
