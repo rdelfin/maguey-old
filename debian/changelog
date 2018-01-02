@@ -1,5 +1,6 @@
-maguey (1.0.4) xenial; urgency=low
+maguey (1.0.5) xenial; urgency=low
 
-  * Fixed magueyConfig.cmake.in to use current version
+  * Added support for quads in ObjLoader class
+  * Added a few tests for ObjLoader
 
  -- Ricardo Delfin Garcia <ricardo.delfin.garcia@gmail.com>  Tue, 26 Dec 2017 22:16:57 -0600

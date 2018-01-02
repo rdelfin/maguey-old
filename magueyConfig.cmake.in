@@ -6,7 +6,7 @@
 #  MAGUEY_DEFINITIONS - Compiler switches required for using Maguey
 
 find_package(PkgConfig)
-pkg_check_modules(PC_MAGUEY QUIET maguey-1.0.4)
+pkg_check_modules(PC_MAGUEY QUIET maguey-1.0.5)
 set(MAGUEY_DEFINITIONS ${PC_MAGUEY_CFLAGS_OTHER})
 
 find_path(MAGUEY_INCLUDE_DIR maguey/maguey.h
