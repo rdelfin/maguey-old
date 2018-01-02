@@ -13,6 +13,7 @@
 #include <iostream>
 #include <stdexcept>
 
+
 ObjLoader::ObjLoader() {
 
 }
@@ -38,41 +39,65 @@ bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& f
     std::vector<std::string> lineElems = split(line, ' ');
     lineElems = std::vector<std::string>(lineElems.begin() + 1, lineElems.end());
 
-    if(lineElems.size() != 3) {
-        std::cerr << "Invalid face line: \"" << line << "\". Should have 3 elements instead of " << lineElems.size() << std::endl;
+    if(lineElems.size() != 3 && lineElems.size() != 4) {
+        std::cerr << "Invalid face line: \"" << line << "\". Should have 3 or 4 elements instead of " << lineElems.size() << std::endl;
         return false;
     }
 
     std::vector<std::vector<uint>> vals = parse_line_elems(lineElems);
 
-    try {
-        if (vals.size() == 3 && vals[0].size() == vals[1].size() && vals[1].size() == vals[2].size()) {
-            if (vals[0].size() == 1) {
-                facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
-                normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
-            } else if (vals[0].size() == 3) {
-                facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
-                normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[2][2] - 1));
-            } else {
-                std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
-                            << line << "\"" << std::endl;
-                return false;
-            }
-        } else {
+    // Check that all values have same number of elements
+    for(size_t i = 0; i < vals.size() - 1; i++) {
+        if(vals[i].size() != vals[i+1].size()) {
             std::cerr
-                    << "Invalid face line. The coordinates do not have the same number of elements (either 1 or 3): \""
-                    << line << "\"" << std::endl;
+                << "Invalid face line. The coordinates do not have the same number of elements (either 1 or 3): \""
+                << line << "\"" << std::endl;
             return false;
         }
-    } catch(std::invalid_argument e) {
-        std::cerr << "There was an error reading an integer on a line. Error: \"" << e.what() << "\"" << std::endl
-                    << "\t Line: \"" << line << "\"" << std::endl;
-        return false;
-    } catch(std::out_of_range e) {
-        std::cerr << "There was an error reading an integer on a line. Error: \"" << e.what() << "\""
-                    << std::endl
-                    << "\t Line: \"" << line << "\"" << std::endl;
-        return false;
+    }
+
+
+    // Regular triangle
+    if(vals.size() == 3) {
+        if (vals[0].size() == 1) {
+            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+            normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+        } else if (vals[0].size() == 3) {
+            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+            normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[2][2] - 1));
+        } else {
+            std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
+                        << line << "\"" << std::endl;
+            return false;
+        }
+    }
+    
+    // Add quad as two triangles
+    else if(vals.size() == 4) {
+        if (vals[0].size() == 1) {
+            // First triangle (1st, 2nd and 4th vertices)
+            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
+            normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
+
+            // Second triangle (2nd, 3rd and 4th vertices)
+            facesRaw.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
+            normalIdx.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
+        } else if (vals[0].size() == 3) {
+            // First triangle (1st, 2nd and 4th vertices)
+            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
+            normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[3][2] - 1));
+
+            // Second triangle (2nd, 3rd and 4th vertices)
+            facesRaw.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
+            normalIdx.push_back(glm::uvec3(vals[1][2] - 1, vals[2][2] - 1, vals[3][2] - 1));
+        } else {
+            std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
+                        << line << "\"" << std::endl;
+            return false;
+        }
+    } else {
+        std::cerr << "Invalid face line. There can only be 3 or 4 elements in the face line and there are "
+                  << vals.size() << ": \"" << line << "\"" << std::endl; 
     }
 
     return true;
@@ -124,10 +149,8 @@ bool ObjLoader::loadString(const std::string &contents,
         }
 
         else if(line[0] == 'f') {
-            if(!process_face(line, facesRaw, normalIdx)) {
-                std::cerr << "Error processing face: \"" << line << "\". See errors above." << std::endl;
+            if(!process_face(line, facesRaw, normalIdx))
                 return false;
-            }
         }
     }
 
