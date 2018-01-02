@@ -20,6 +20,10 @@ public:
                             std::vector<glm::vec4>& vertices, std::vector<glm::vec4>& normals,
                             std::vector<glm::uvec3>& faces) const;
     ~ObjLoader();
+
+private:
+    bool process_face(const std::string& line, std::vector<glm::uvec3>& facesRaw, std::vector<glm::uvec3>& normalIdx) const;
+    std::vector<std::vector<uint>> parse_line_elems(const std::vector<std::string>& line_elems) const;
 };
 
 

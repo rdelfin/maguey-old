@@ -7,6 +7,7 @@
 #include <maguey/obj_loader.h>
 #include <maguey/util.h>
 
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -14,6 +15,67 @@
 
 ObjLoader::ObjLoader() {
 
+}
+
+std::vector<std::vector<uint>> ObjLoader::parse_line_elems(const std::vector<std::string>& line_elems) const {
+    std::vector<std::vector<uint>> result;
+    for(const std::string& vert : line_elems) {
+        std::vector<std::string> vert_vals_str = split(vert, '/');
+        std::vector<uint> vert_vals_uint;
+        vert_vals_uint.resize(vert_vals_str.size());
+        std::transform(vert_vals_str.begin(), vert_vals_str.end(), vert_vals_uint.begin(),
+                       [](std::string s) -> uint { return s == "" ? 0 : std::stoul(s); });
+        
+        result.push_back(vert_vals_uint);
+    }
+
+    return result;
+}
+
+bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& facesRaw, std::vector<glm::uvec3>& normalIdx) const {
+    std::string header;
+
+    std::vector<std::string> lineElems = split(line, ' ');
+    lineElems = std::vector<std::string>(lineElems.begin() + 1, lineElems.end());
+
+    if(lineElems.size() != 3) {
+        std::cerr << "Invalid face line: \"" << line << "\". Should have 3 elements instead of " << lineElems.size() << std::endl;
+        return false;
+    }
+
+    std::vector<std::vector<uint>> vals = parse_line_elems(lineElems);
+
+    try {
+        if (vals.size() == 3 && vals[0].size() == vals[1].size() && vals[1].size() == vals[2].size()) {
+            if (vals[0].size() == 1) {
+                facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+                normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+            } else if (vals[0].size() == 3) {
+                facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+                normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[2][2] - 1));
+            } else {
+                std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
+                            << line << "\"" << std::endl;
+                return false;
+            }
+        } else {
+            std::cerr
+                    << "Invalid face line. The coordinates do not have the same number of elements (either 1 or 3): \""
+                    << line << "\"" << std::endl;
+            return false;
+        }
+    } catch(std::invalid_argument e) {
+        std::cerr << "There was an error reading an integer on a line. Error: \"" << e.what() << "\"" << std::endl
+                    << "\t Line: \"" << line << "\"" << std::endl;
+        return false;
+    } catch(std::out_of_range e) {
+        std::cerr << "There was an error reading an integer on a line. Error: \"" << e.what() << "\""
+                    << std::endl
+                    << "\t Line: \"" << line << "\"" << std::endl;
+        return false;
+    }
+
+    return true;
 }
 
 bool ObjLoader::loadString(const std::string &contents,
@@ -41,7 +103,7 @@ bool ObjLoader::loadString(const std::string &contents,
 
             if(!(lineStream >> header >> x >> y >> z)) {
                 std::cerr << "Invalid vertex line: \"" << line << "\"" << std::endl;
-                break;
+                return false;
             }
 
             vertexRaw.push_back(glm::vec4(x, y, z, 1.0f));
@@ -55,63 +117,16 @@ bool ObjLoader::loadString(const std::string &contents,
 
             if(!(lineStream >> header >> x >> y >> z)) {
                 std::cerr << "Invalid vertex normal line: \"" << line << "\"" << std::endl;
-                break;
+                return false;
             }
 
             normalRaw.push_back(glm::vec4(x, y, z, 0.0f));
         }
 
         else if(line[0] == 'f') {
-            std::string header;
-
-            std::vector<std::string> lineElems = split(line, ' ');
-
-            if(lineElems.size() != 4) {
-                std::cerr << "Invalid face line: \"" << line << "\"" << std::endl;
-                break;
-            }
-
-            try {
-                std::vector<std::string> xElems, yElems, zElems;
-                xElems = split(lineElems[1], '/');
-                yElems = split(lineElems[2], '/');
-                zElems = split(lineElems[3], '/');
-                if (xElems.size() == yElems.size() && yElems.size() == zElems.size()) {
-                    if (xElems.size() == 1) {
-                        unsigned long x, y, z;
-                        x = std::stoul(xElems[0]);
-                        y = std::stoul(yElems[0]);
-                        z = std::stoul(zElems[0]);
-
-                        facesRaw.push_back(glm::uvec3(x - 1, y - 1, z - 1));
-                        normalIdx.push_back(glm::uvec3(x - 1, y - 1, z - 1));
-                    } else if (xElems.size() == 3) {
-                        unsigned long xFace, yFace, zFace, xNormal, yNormal, zNormal;
-                        xFace = std::stoul(xElems[0]);
-                        yFace = std::stoul(yElems[0]);
-                        zFace = std::stoul(zElems[0]);
-                        xNormal = std::stoul(xElems[2]);
-                        yNormal = std::stoul(yElems[2]);
-                        zNormal = std::stoul(zElems[2]);
-
-                        facesRaw.push_back(glm::uvec3(xFace - 1, yFace - 1, zFace - 1));
-                        normalIdx.push_back(glm::uvec3(xNormal - 1, yNormal - 1, zNormal - 1));
-                    } else {
-                        std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
-                                  << line << "\"" << std::endl;
-                    }
-                } else {
-                    std::cerr
-                            << "Invalid face line. The coordinates do not have the same number of elements (either 1 or 3): \""
-                            << line << "\"" << std::endl;
-                }
-            } catch(std::invalid_argument e) {
-                std::cerr << "There was an error reading an integer on a line. Error: \"" << e.what() << "\"" << std::endl
-                          << "\t Line: \"" << line << "\"" << std::endl;
-            } catch(std::out_of_range e) {
-                std::cerr << "There was an error reading an integer on a line. Error: \"" << e.what() << "\""
-                          << std::endl
-                          << "\t Line: \"" << line << "\"" << std::endl;
+            if(!process_face(line, facesRaw, normalIdx)) {
+                std::cerr << "Error processing face: \"" << line << "\". See errors above." << std::endl;
+                return false;
             }
         }
     }
