@@ -21,7 +21,7 @@ Game::Game(const std::string& windowName, glm::ivec2 window_size, bool fullscree
     if (!glfwInit()) exit(EXIT_FAILURE);
     //glfwSetErrorCallback(ErrorCallback);
 
-    // Ask an OpenGL 3.3 core profile context
+    // Ask an OpenGL 4.0 core profile context
     // It is required on OSX and non-NVIDIA Linux
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
