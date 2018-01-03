@@ -14,11 +14,6 @@
 #include <maguey/program.h>
 #include <maguey/camera.h>
 
-// File definitions
-#define CUBEMAP_FRAG_SHADER "resources/shaders/skybox.frag"
-#define CUBEMAP_GEOM_SHADER "resources/shaders/skybox.geom"
-#define CUBEMAP_VERT_SHADER "resources/shaders/skybox.vert"
-
 class Skybox {
 public:
     Skybox();

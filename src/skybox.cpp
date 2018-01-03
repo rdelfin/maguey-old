@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include <maguey/skybox.h>
+#include <maguey/std_shaders.hpp>
 
 const std::string Skybox::VERTEX_VBO_NAME = "vertex_position";
 const std::string Skybox::FRAGMENT_COLOR_NAME = "vertex_color";
@@ -59,7 +60,9 @@ void Skybox::load(const std::string &right, const std::string &left, const std::
     vbo.resize(2);
     CHECK_GL_ERROR(glGenBuffers(2, vbo.data()));
 
-    program = Program(uniforms, Shader(CUBEMAP_VERT_SHADER), Shader(CUBEMAP_GEOM_SHADER), Shader(CUBEMAP_FRAG_SHADER));
+    program = Program(uniforms, Shader(SKYBOX_SHADER_VERT, false),
+                                Shader(SKYBOX_SHADER_GEOM, false),
+                                Shader(SKYBOX_SHADER_FRAG, false));
     GLint programId = program.getProgramId();
 
     // Bind vertices
