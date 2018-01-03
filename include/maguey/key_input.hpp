@@ -9,6 +9,8 @@
 
 #define TOTAL_KEYS (GLFW_KEY_LAST+1)
 
+namespace maguey {
+
 class KeyInput {
 public:
     KeyInput(GLFWwindow* window);
@@ -25,5 +27,7 @@ private:
     bool keyStateNow[TOTAL_KEYS];
     bool keyStatePrev[TOTAL_KEYS];
 };
+
+} // namespace maguey
 
 #endif //BOIDS_KEYINPUT_HPP

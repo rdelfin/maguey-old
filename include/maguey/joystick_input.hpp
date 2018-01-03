@@ -12,6 +12,8 @@
 
 #include <GLFW/glfw3.h>
 
+namespace maguey {
+
 class invalid_joystick_exception : public std::exception {
 public:
     invalid_joystick_exception(unsigned int index) : index(index) { }
@@ -71,5 +73,6 @@ private:
     std::vector<float> prevAxes, currAxes;
 };
 
+} // namespace maguey
 
 #endif //BOIDS_JOYSTICK_INPUT_H

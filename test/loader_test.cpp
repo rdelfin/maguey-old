@@ -89,7 +89,7 @@ void comparison_test(const std::string& file,
                      std::vector<glm::vec4> true_verts, std::vector<glm::vec4> true_normals,
                      std::vector<glm::uvec3> true_faces) {
     
-    ObjLoader loader;
+    maguey::ObjLoader loader;
     std::vector<glm::vec4> vertices, normals;
     std::vector<glm::uvec3> faces;
 

@@ -4,7 +4,11 @@
 // This file contains some standard shaders used as defaults in the meshes
 // or as the shaders for special objects like the skybox.
 
+#pragma once
+
 #include <string>
+
+namespace maguey {
 
 const std::string MESH_SHADER_VERT =
 R"zzz(
@@ -149,3 +153,5 @@ void main()
     vertex_color = texture(skybox, TexCoords);
 }
 )zzz";
+
+} // namespace maguey

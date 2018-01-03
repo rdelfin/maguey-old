@@ -9,6 +9,7 @@
 
 #define sign(x) (x < 0 ? -1.0f : (x > 0 ? 1.0f : 0.0f))
 
+namespace maguey {
 
 JoystickInput::JoystickInput() { }
 
@@ -92,3 +93,5 @@ void JoystickInput::update() {
 JoystickInput::~JoystickInput() {
 
 }
+
+} // namespace maguey

@@ -3,6 +3,7 @@
 #include <maguey/game_time.hpp>
 #include <chrono>
 
+namespace maguey {
 
 GameTime::GameTime() {
     reset();
@@ -32,3 +33,5 @@ void GameTime::reset() {
     lastFrame = start;
     currFrame = start;
 }
+
+}  // namespace maguey

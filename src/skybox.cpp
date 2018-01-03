@@ -14,6 +14,9 @@
 #include <maguey/skybox.hpp>
 #include <maguey/std_shaders.hpp>
 
+
+namespace maguey {
+
 const std::string Skybox::VERTEX_VBO_NAME = "vertex_position";
 const std::string Skybox::FRAGMENT_COLOR_NAME = "vertex_color";
 
@@ -130,3 +133,5 @@ void Skybox::generateCube() {
 Skybox::~Skybox() {
 
 }
+
+} // namespace maguey

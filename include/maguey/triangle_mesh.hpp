@@ -17,6 +17,8 @@
 #include <maguey/program.hpp>
 #include <maguey/std_shaders.hpp>
 
+namespace maguey {
+
 // TODO: Either disallow copy or regenerate data sources on copy
 class TriangleMesh : public Renderable {
 public:
@@ -68,5 +70,6 @@ protected:
     static const std::string NORMAL_VBO_NAME;
 };
 
+} // namespace maguey
 
 #endif //PROCEDURALCITIES_TRIANGLEMESH_H

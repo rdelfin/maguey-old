@@ -11,6 +11,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <iostream>
 
+namespace maguey {
+
 namespace {
     float pan_speed = 1.0f;
     float roll_speed = 0.1f;
@@ -144,3 +146,5 @@ std::function<const void*()> Camera::projectionMatrixDataSource() {
 }
 
 Camera::~Camera() { }
+
+} // namespace maguey

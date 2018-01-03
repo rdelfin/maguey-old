@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 
+namespace maguey {
+
 std::vector<std::string> split(const std::string& string, char delimiter);
+
+} // namespace maguey
 
 #endif //BOIDS_UTIL_HPP

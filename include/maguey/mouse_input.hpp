@@ -10,6 +10,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+namespace maguey {
+
 class MouseInput {
 public:
     MouseInput(GLFWwindow* window);
@@ -31,6 +33,8 @@ private:
 
     glm::vec2 currCursor, prevCursor;
 };
+
+} // namespace maguey
 
 
 #endif //BOIDS_MOUSEINPUT_HPP

@@ -5,6 +5,8 @@
 #ifndef BOIDS_GAME_TIME_HPP
 #define BOIDS_GAME_TIME_HPP
 
+namespace maguey {
+
 class GameTime
 {
 public:
@@ -25,6 +27,8 @@ private:
     long double currFrame;
 
 };
+
+} // namespace maguey
 
 #endif //BOIDS_GAME_TIME_HPP
 

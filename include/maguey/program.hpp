@@ -10,6 +10,8 @@
 #include <fstream>
 #include <GL/glew.h>
 
+namespace maguey {
+
 typedef enum {
     BINDER_MATRIX4_F,
     BINDER_MATRIX3_F,
@@ -119,3 +121,5 @@ private:
     std::vector<GLint> uniformIds;
     GLint shaderProgram;
 };
+
+}  // namespace maguey

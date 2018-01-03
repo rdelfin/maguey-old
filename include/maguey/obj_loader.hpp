@@ -13,6 +13,8 @@
 
 #include <vector>
 
+namespace maguey {
+
 class ObjLoader : public MeshLoader {
 public:
     ObjLoader();
@@ -26,5 +28,6 @@ private:
     std::vector<std::vector<uint>> parse_line_elems(const std::vector<std::string>& line_elems) const;
 };
 
+} // namespace maguey
 
 #endif //BOIDS_OBJLOADER_HPP

@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+namespace maguey {
+
 std::vector<std::string> split(const std::string& string, char delimiter) {
     std::vector<std::string> elems;
     std::stringstream ss(string);
@@ -21,3 +23,5 @@ std::vector<std::string> split(const std::string& string, char delimiter) {
 
     return elems;
 }
+
+} // namespace maguey

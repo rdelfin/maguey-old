@@ -8,6 +8,8 @@
 
 #include <maguey/game_object.hpp>
 
+namespace maguey {
+
 GameObject::GameObject() : forward(1.0, 0.0, 0.0), up(0.0, 1.0, 0.0) {
 
 }
@@ -84,3 +86,5 @@ GameObject::~GameObject() {
     for(auto it = meshes.begin(); it != meshes.end(); ++it)
         delete *it;
 }
+
+} // namespace maguey

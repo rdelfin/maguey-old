@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+namespace maguey {
 
 class MeshLoader {
 public:
@@ -43,5 +44,6 @@ public:
     }
 };
 
+} // namespace maguey
 
 #endif //BOIDS_MESHLOADER_HPP

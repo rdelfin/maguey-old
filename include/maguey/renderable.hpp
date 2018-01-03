@@ -6,6 +6,8 @@
 
 #include <maguey/program.hpp>
 
+namespace maguey {
+
 class Renderable {
 public:
     Renderable()  {
@@ -18,3 +20,5 @@ public:
 
     }
 };
+
+} // namespace maguey

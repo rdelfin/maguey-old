@@ -11,6 +11,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+namespace maguey {
+
 class Camera {
 public:
     Camera();   // Used to allow constructors to create a window and then set this.
@@ -56,6 +58,8 @@ private:
 
     GLFWwindow* window;
 };
+
+} // namespace maguey
 
 
 #endif //PROCEDURALCITIES_CAMERA_H

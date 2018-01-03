@@ -13,6 +13,8 @@ glm::vec2 CURSOR_POSITION;
 bool BUTTON_STATES[TOTAL_MOUSE_BUTTONS];
 static bool MOUSE_BINDED = false;
 
+namespace maguey {
+
 MouseInput::MouseInput(GLFWwindow* window) {
     if(!MOUSE_BINDED) {
         MOUSE_BINDED = true;
@@ -70,3 +72,5 @@ void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if(action == GLFW_RELEASE)
         BUTTON_STATES[button] = false;
 }
+
+} // namespace maguey

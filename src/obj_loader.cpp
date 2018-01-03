@@ -14,6 +14,8 @@
 #include <stdexcept>
 
 
+namespace maguey {
+
 ObjLoader::ObjLoader() {
 
 }
@@ -178,3 +180,5 @@ bool ObjLoader::loadString(const std::string &contents,
 ObjLoader::~ObjLoader() {
 
 }
+
+} // namespace maguey

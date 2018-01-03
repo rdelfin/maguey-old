@@ -17,6 +17,8 @@
 #include <string>
 #include <unordered_map>
 
+namespace maguey {
+
 class Game {
 public:
     Game(const std::string& windowName, glm::ivec2 window_size = glm::ivec2(800, 600), bool fullscreen = false);
@@ -50,5 +52,6 @@ private:
     GameTime gameTime;
 };
 
+} // namespace maguey
 
 #endif //BOIDS_GAME_HPP

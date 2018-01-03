@@ -14,6 +14,7 @@
 #include <maguey/mesh_loader.hpp>
 #include <maguey/triangle_mesh.hpp>
 
+namespace maguey {
 
 // TODO: Implement equals operator to either create a copy of the vector and remove from the one being copied, to disable it, or switch to shared_ptr
 class GameObject {
@@ -65,5 +66,6 @@ private:
     glm::vec3 forward, up;
 };
 
+} // namespace maguey
 
 #endif //BOIDS_GAME_OBJECT_HPP

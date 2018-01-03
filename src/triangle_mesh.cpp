@@ -19,6 +19,9 @@
 
 using namespace std;
 
+
+namespace maguey {
+
 const std::string TriangleMesh::VERTEX_VBO_NAME = "vertex_position";
 const std::string TriangleMesh::NORMAL_VBO_NAME = "normal";
 const std::string TriangleMesh::FRAGMENT_COLOR_NAME = "vertex_color";
@@ -145,3 +148,5 @@ void TriangleMesh::draw() {
 TriangleMesh::~TriangleMesh() {
 
 }
+
+} // namespace maguey

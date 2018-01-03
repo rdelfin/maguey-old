@@ -11,6 +11,10 @@ static bool KEYS_BINDED = false;
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+
+
+namespace maguey {
+
 KeyInput::KeyInput(GLFWwindow* window) {
     if(!KEYS_BINDED) {
         KEYS_BINDED = true;
@@ -55,3 +59,5 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         KEY_STATES[key] = false;
 
 }
+
+} // namespace maguey

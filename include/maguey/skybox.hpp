@@ -14,6 +14,8 @@
 #include <maguey/program.hpp>
 #include <maguey/camera.hpp>
 
+namespace maguey {
+
 class Skybox {
 public:
     Skybox();
@@ -43,5 +45,6 @@ private:
     static const std::string NORMAL_VBO_NAME;
 };
 
+} // namespace maguey
 
 #endif //BOIDS_CUBEMAP_HPP

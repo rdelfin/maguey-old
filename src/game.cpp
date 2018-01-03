@@ -14,6 +14,8 @@
 #include <iostream>
 #include <string>
 
+namespace maguey {
+
 void scaleToMonitor(GLFWmonitor* monitor, glm::ivec2& window_size);
 
 Game::Game(const std::string& windowName, glm::ivec2 window_size, bool fullscreen)
@@ -142,3 +144,6 @@ void scaleToMonitor(GLFWmonitor* monitor, glm::ivec2& window_size) {
     else if(monitor_size.y < window_size.y)
         window_size = scaled_y;
 }
+
+
+} // namespace maguey
