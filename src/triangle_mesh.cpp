@@ -29,27 +29,26 @@ TriangleMesh::TriangleMesh() {
 }
 
 void TriangleMesh::load(const std::vector<glm::vec4>& vertices, const std::vector<glm::vec4>& normals, const std::vector<glm::uvec3>& faces,
-                        const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader,
-                        Camera& camera) {
-    loadImpl(vertices, normals, faces, vertexShader, geometryShader, fragmentShader, camera);
+                        Camera& camera,
+                        const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
+    loadImpl(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
 }
 
-void TriangleMesh::load(const std::string& path, const MeshLoader& loader,
-                        const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader,
-                        Camera& camera) {
+void TriangleMesh::load(const std::string& path, const MeshLoader& loader, Camera& camera,
+                        const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
     std::vector<glm::vec4> vertices, normals;
     std::vector<glm::uvec3> faces;
     if(!loader.loadFile(path, vertices, normals, faces)) {
         std::cerr << "There was an error loading the file \"" << path << "\"." << std::endl;
     }
 
-    loadImpl(vertices, normals, faces, vertexShader, geometryShader, fragmentShader, camera);
+    loadImpl(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
 }
 
 void TriangleMesh::loadImpl(const std::vector<glm::vec4> &vertices, const std::vector<glm::vec4> &normals,
-                            const std::vector<glm::uvec3> &faces, const Shader &vertexShader,
-                            const Shader &geometryShader, const Shader &fragmentShader,
-                            Camera& camera) {
+                            const std::vector<glm::uvec3> &faces, Camera& camera, 
+                            const Shader &vertexShader,
+                            const Shader &geometryShader, const Shader &fragmentShader) {
     // Set default model position
     this->forward = glm::vec3(1.0f, 0.0f, 0.0f);
     this->up = glm::vec3(0.0f, 1.0f, 0.0f);

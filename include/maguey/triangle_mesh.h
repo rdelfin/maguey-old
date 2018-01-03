@@ -16,16 +16,21 @@
 #include <maguey/renderable.h>
 #include <maguey/program.h>
 
+#include <maguey/std_shaders.hpp>
+
 // TODO: Either disallow copy or regenerate data sources on copy
 class TriangleMesh : public Renderable {
 public:
     TriangleMesh();
     void load(const std::vector<glm::vec4>& vertices, const std::vector<glm::vec4>& normals, const std::vector<glm::uvec3>& faces,
-         const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader,
-         Camera& camera);
-    void load(const std::string& path, const MeshLoader& loader,
-         const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader,
-         Camera& camera);
+         Camera& camera,
+         const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+         const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+         const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false));
+    void load(const std::string& path, const MeshLoader& loader, Camera& camera,
+         const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+         const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+         const Shader& fragmentShader = Shader(MESH_SHADER_FRAG, false));
 
     void setPosition(glm::vec3 position);
     void setRotation(glm::vec3 forward, glm::vec3 up);
@@ -41,8 +46,8 @@ public:
     virtual ~TriangleMesh();
 protected:
     void loadImpl(const std::vector<glm::vec4>& vertices, const std::vector<glm::vec4>& normals, const std::vector<glm::uvec3>& faces,
-                  const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader,
-                  Camera& camera);
+                  Camera& camera,
+                  const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader);
 
     std::function<const void*()> modelMatrixDataSource();
 
