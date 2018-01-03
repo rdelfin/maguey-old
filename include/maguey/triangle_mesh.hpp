@@ -11,11 +11,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <maguey/camera.h>
-#include <maguey/mesh_loader.h>
-#include <maguey/renderable.h>
-#include <maguey/program.h>
-
+#include <maguey/camera.hpp>
+#include <maguey/mesh_loader.hpp>
+#include <maguey/renderable.hpp>
+#include <maguey/program.hpp>
 #include <maguey/std_shaders.hpp>
 
 // TODO: Either disallow copy or regenerate data sources on copy

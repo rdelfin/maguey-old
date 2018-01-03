@@ -2,7 +2,7 @@
 // Created by rdelfin on 9/17/17.
 //
 
-#include <maguey/joystick_input.h>
+#include <maguey/joystick_input.hpp>
 
 #include <string>
 #include <tgmath.h>

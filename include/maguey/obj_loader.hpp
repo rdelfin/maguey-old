@@ -6,7 +6,7 @@
 #define BOIDS_OBJLOADER_HPP
 
 
-#include <maguey/mesh_loader.h>
+#include <maguey/mesh_loader.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>

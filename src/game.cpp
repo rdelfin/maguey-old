@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 
 #include <maguey/debuggl.h>
-#include <maguey/game.h>
+#include <maguey/game.hpp>
 
 #include <iostream>
 #include <string>

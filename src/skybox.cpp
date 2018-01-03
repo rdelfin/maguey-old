@@ -11,7 +11,7 @@
 #include <maguey/debuggl.h>
 #include <iostream>
 
-#include <maguey/skybox.h>
+#include <maguey/skybox.hpp>
 #include <maguey/std_shaders.hpp>
 
 const std::string Skybox::VERTEX_VBO_NAME = "vertex_position";

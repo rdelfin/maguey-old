@@ -5,11 +5,11 @@
 #ifndef BOIDS_GAME_HPP
 #define BOIDS_GAME_HPP
 
-#include <maguey/skybox.h>
-#include <maguey/game_time.h>
-#include <maguey/joystick_input.h>
-#include <maguey/key_input.h>
-#include <maguey/mouse_input.h>
+#include <maguey/skybox.hpp>
+#include <maguey/game_time.hpp>
+#include <maguey/joystick_input.hpp>
+#include <maguey/key_input.hpp>
+#include <maguey/mouse_input.hpp>
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>

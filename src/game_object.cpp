@@ -6,7 +6,7 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
-#include <maguey/game_object.h>
+#include <maguey/game_object.hpp>
 
 GameObject::GameObject() : forward(1.0, 0.0, 0.0), up(0.0, 1.0, 0.0) {
 

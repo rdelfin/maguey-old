@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 
-#include <maguey/program.h>
-#include <maguey/camera.h>
+#include <maguey/program.hpp>
+#include <maguey/camera.hpp>
 
 class Skybox {
 public:

@@ -9,9 +9,9 @@
 #include <glm/glm.hpp>
 
 #include <maguey/debuggl.h>
-#include <maguey/triangle_mesh.h>
-#include <maguey/mesh_loader.h>
-#include <maguey/program.h>
+#include <maguey/triangle_mesh.hpp>
+#include <maguey/mesh_loader.hpp>
+#include <maguey/program.hpp>
 
 #include <iostream>
 #include <vector>

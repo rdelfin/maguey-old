@@ -1,6 +1,6 @@
 #define GLM_FORCE_RADIANS
 
-#include <maguey/game_time.h>
+#include <maguey/game_time.hpp>
 #include <chrono>
 
 

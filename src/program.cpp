@@ -13,7 +13,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include <maguey/program.h>
+#include <maguey/program.hpp>
 
 
 /*============================================================================================================
