@@ -6,7 +6,7 @@
 
 #include <string>
 
-const std::string mesh_shader_vert =
+const std::string MESH_SHADER_VERT =
 R"zzz(
 #version 400 core
 
@@ -29,7 +29,7 @@ void main() {
 }
 )zzz";
 
-const std::string mesh_shader_geom =
+const std::string MESH_SHADER_GEOM =
 R"zzz(
 #version 400 core
 
@@ -65,7 +65,7 @@ void main() {
 }
 )zzz";
 
-const std::string mesh_shader_frag =
+const std::string MESH_SHADER_FRAG =
 R"zzz(
 #version 400 core
 #line 1
@@ -94,7 +94,7 @@ void main() {
 )zzz";
 
 
-std::string skybox_shader_vert =
+std::string SKYBOX_SHADER_VERT =
 R"zzz(
 #version 400 core
 
@@ -112,7 +112,7 @@ void main()
 }
 )zzz";
 
-std::string skybox_shader_geom =
+std::string SKYBOX_SHADER_GEOM =
 R"zzz(
 #version 400 core
 
@@ -136,7 +136,7 @@ void main() {
 }
 )zzz";
 
-std::string skybox_shader_frag =  R"zzz(
+std::string SKYBOX_SHADER_FRAG =  R"zzz(
 #version 400 core
 out vec4 vertex_color;
 
@@ -148,4 +148,4 @@ void main()
 {
     vertex_color = texture(skybox, TexCoords);
 }
-)zzz"
+)zzz";
