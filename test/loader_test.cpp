@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <gtest/gtest.h>
 
-#include <maguey/obj_loader.h>
+#include <maguey/obj_loader.hpp>
 
 std::string oneTrigObjFile =
 R"(
