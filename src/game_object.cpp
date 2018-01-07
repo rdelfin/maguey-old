@@ -10,6 +10,7 @@
 
 namespace maguey {
 
+// TODO: Implement equals operator to either create a copy of the vector and remove from the one being copied, to disable it, or switch to shared_ptr
 GameObject::GameObject() : forward(1.0, 0.0, 0.0), up(0.0, 1.0, 0.0) {
 
 }
