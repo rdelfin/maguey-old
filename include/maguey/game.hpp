@@ -19,8 +19,18 @@
 
 namespace maguey {
 
+
+/**
+ * A base class to extend to create a basic game with a window. It provides a
+ * GameTime object, key input, mouse input, multiple joysticks, and update/draw
+ * methods.
+ */
 class Game {
 public:
+    /**
+     * Main constructor for the game. Provides basic information to create the
+     * window
+     */
     Game(const std::string& windowName, glm::ivec2 window_size = glm::ivec2(800, 600), bool fullscreen = false);
 
     void run();
