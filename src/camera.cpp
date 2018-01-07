@@ -13,13 +13,6 @@
 
 namespace maguey {
 
-namespace {
-    float pan_speed = 1.0f;
-    float roll_speed = 0.1f;
-    float rotation_speed = 0.05f;
-    float zoom_speed = 1.0f;
-};
-
 Camera::Camera() { }
 
 Camera::Camera(GLFWwindow* window) : window(window) { }
@@ -38,8 +31,8 @@ void Camera::reposition(glm::vec3 pos, glm::vec3 dir, glm::vec3 up) {
 
 void Camera::yaw(float dir) {
     // Rotate around up vector (for yaw)
-    eyeRotateMat = glm::rotate(rotation_speed*dir, up_) * eyeRotateMat;
-    centerRotateMat = glm::rotate(rotation_speed*dir, up_) * centerRotateMat;
+    eyeRotateMat = glm::rotate(dir, up_) * eyeRotateMat;
+    centerRotateMat = glm::rotate(dir, up_) * centerRotateMat;
 
     glm::vec3 newEye(eyeRotateMat * glm::vec4(eye_, 1));
     // Generate new look, right and up vectors based on new rotation
@@ -50,8 +43,8 @@ void Camera::yaw(float dir) {
 
 void Camera::pitch(float dir) {
     // Rotate around right pointing vector (for pitch)
-    eyeRotateMat = glm::rotate(rotation_speed*dir, right_) * eyeRotateMat;
-    centerRotateMat = glm::rotate(rotation_speed*dir, right_) * centerRotateMat;
+    eyeRotateMat = glm::rotate(dir, right_) * eyeRotateMat;
+    centerRotateMat = glm::rotate(dir, right_) * centerRotateMat;
 
     glm::vec3 newEye(eyeRotateMat * glm::vec4(eye_, 1));
     // Generate new look, right and up vectors based on new rotation
@@ -62,13 +55,13 @@ void Camera::pitch(float dir) {
 
 
 void Camera::roll(float dir) {
-    glm::mat4 rollRotate = glm::rotate(dir*roll_speed, look_);
+    glm::mat4 rollRotate = glm::rotate(dir, look_);
     right_ = glm::normalize(glm::vec3(rollRotate * glm::vec4(right_, 0.0f)));
     up_ = glm::normalize(glm::vec3(rollRotate * glm::vec4(up_, 0.0f)));
 }
 
 void Camera::fpsPitch(float dir) {
-    glm::mat4 pitchRotate = glm::rotate(dir*roll_speed, right_);
+    glm::mat4 pitchRotate = glm::rotate(dir, right_);
     right_ = glm::normalize(glm::vec3(pitchRotate * glm::vec4(right_, 0.0f)));
     look_ = glm::normalize(glm::vec3(pitchRotate * glm::vec4(look_, 0.0f)));
     up_ = glm::normalize(glm::vec3(pitchRotate * glm::vec4(up_, 0.0f)));
@@ -76,7 +69,7 @@ void Camera::fpsPitch(float dir) {
 }
 
 void Camera::fpsYaw(float dir) {
-    glm::mat4 yawRotate = glm::rotate(dir*roll_speed, up_);
+    glm::mat4 yawRotate = glm::rotate(dir, up_);
     right_ = glm::normalize(glm::vec3(yawRotate * glm::vec4(right_, 0.0f)));
     look_ = glm::normalize(glm::vec3(yawRotate * glm::vec4(look_, 0.0f)));
     up_ = glm::normalize(glm::vec3(yawRotate * glm::vec4(up_, 0.0f)));
@@ -85,26 +78,26 @@ void Camera::fpsYaw(float dir) {
 
 
 void Camera::strave(glm::vec3 dir) {
-    centerTranslateMat  = glm::translate((dir.x*right_ + dir.y*up_ + dir.z*look_)*pan_speed) * centerTranslateMat;
+    centerTranslateMat  = glm::translate(dir.x*right_ + dir.y*up_ + dir.z*look_) * centerTranslateMat;
 }
 
 void Camera::pan(glm::vec3 dir) {
-    centerTranslateMat  = glm::translate((dir.x*right_ + dir.y*up_ + dir.z*look_)*pan_speed) * centerTranslateMat;
-    eyeTranslateMat  = glm::translate((dir.x*right_ + dir.y*up_ + dir.z*look_)*pan_speed) * eyeTranslateMat;
+    centerTranslateMat  = glm::translate(dir.x*right_ + dir.y*up_ + dir.z*look_) * centerTranslateMat;
+    eyeTranslateMat  = glm::translate(dir.x*right_ + dir.y*up_ + dir.z*look_) * eyeTranslateMat;
 }
 
 
 void Camera::yPan(glm::vec3 dir) {
-    centerTranslateMat  = glm::translate(glm::vec3(dir.x, dir.y, dir.z)*pan_speed) * centerTranslateMat;
-    eyeTranslateMat  = glm::translate(glm::vec3(dir.x, dir.y, dir.z)*pan_speed) * eyeTranslateMat;
+    centerTranslateMat  = glm::translate(glm::vec3(dir.x, dir.y, dir.z)) * centerTranslateMat;
+    eyeTranslateMat  = glm::translate(glm::vec3(dir.x, dir.y, dir.z)) * eyeTranslateMat;
 }
 
 void Camera::yStrave(glm::vec3 dir) {
-    centerTranslateMat  = glm::translate(glm::vec3(dir.x, dir.y, dir.z)*pan_speed) * centerTranslateMat;
+    centerTranslateMat  = glm::translate(glm::vec3(dir.x, dir.y, dir.z)) * centerTranslateMat;
 }
 
 void Camera::zoom(float dir) {
-    camera_distance_ += dir*zoom_speed;
+    camera_distance_ += dir;
     eye_ = glm::vec3(0.0f, 0.0f, camera_distance_);
 }
 
