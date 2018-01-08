@@ -11,8 +11,6 @@
 
 namespace maguey {
 
-JoystickInput::JoystickInput() { }
-
 JoystickInput::JoystickInput(unsigned int index) : index(index) {
     if(index > GLFW_JOYSTICK_LAST)
         throw invalid_joystick_exception(index);
