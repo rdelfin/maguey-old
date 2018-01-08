@@ -19,6 +19,7 @@
 
 using namespace std;
 
+// TODO: Either disallow copy or regenerate data sources on copy
 
 namespace maguey {
 

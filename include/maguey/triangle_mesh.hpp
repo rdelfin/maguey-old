@@ -19,7 +19,7 @@
 
 namespace maguey {
 
-// TODO: Either disallow copy or regenerate data sources on copy
+
 class TriangleMesh : public Renderable {
 public:
     TriangleMesh();
