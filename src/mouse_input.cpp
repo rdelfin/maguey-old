@@ -62,7 +62,9 @@ MouseInput::~MouseInput() {
 }
 
 void MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y) {
-    CURSOR_POSITION = glm::vec2(mouse_x, mouse_y);
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    CURSOR_POSITION = glm::vec2(mouse_x / width, mouse_y / height);
 }
 
 
