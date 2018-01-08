@@ -10,6 +10,12 @@
 
 namespace maguey {
 
+/**
+ * Splits a string into a vector of strings by a delimiter
+ *
+ * @param string    The string to split
+ * @param delimiter The character to split the string by.
+ */
 std::vector<std::string> split(const std::string& string, char delimiter);
 
 } // namespace maguey
