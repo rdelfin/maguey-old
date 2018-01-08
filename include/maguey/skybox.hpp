@@ -11,8 +11,9 @@
 #include <string>
 #include <vector>
 
-#include <maguey/program.hpp>
 #include <maguey/camera.hpp>
+#include <maguey/program.hpp>
+#include <maguey/renderable.hpp>
 
 namespace maguey {
 
@@ -20,7 +21,7 @@ namespace maguey {
  * A class representing a box surrounding the world where background textures
  * can be placed.
  */
-class Skybox {
+class Skybox : public Renderable {
 public:
     /**
      * Main constructor, creates an empty skybox. Load needs to be called next.
@@ -52,7 +53,7 @@ public:
     /**
      * Renders the skybox on the screen.
      */
-    void draw();
+    virtual void draw() override;
 
     ~Skybox();
 private:
