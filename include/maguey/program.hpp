@@ -26,7 +26,7 @@ typedef enum {
  *      binder: function to bind the uniform
  *      data_source: function to get the data for the uniform
  *
- * Lifted from project 3
+ * Lifted from CS 354 project 3
  */
 class ShaderUniform {
 public:
@@ -55,6 +55,9 @@ public:
     std::function<const void*()> data_source;
 };
 
+/**
+ * Description of a OpenGL/GLSL shader program.
+ */
 struct Shader {
 public:
     /**
@@ -77,6 +80,12 @@ public:
         }
     }
 
+    /**
+     * Compiles the shader on the GPU.
+     * 
+     * @param type One of GL_VERTEX_SHADER, GL_GEOMETRY_SHADER or
+     *             GL_FRAGMENT_SHADER.
+     */
     void compile(int type);
 
     ~Shader() { }
@@ -85,6 +94,47 @@ public:
     int shader_id;
 };
 
+
+/**
+ * Represents a complete GLSL program, with all 3 corresponding shaders, and
+ * any appropriate shader uniforms. The program is generally associated with
+ * one or more meshes.
+ * 
+ * Example:
+ * ```
+ * // During mesh initialization
+ * std::vector<ShaderUniform> uniforms = ...something...
+ * CHECK_GL_ERROR(glGenVertexArrays(1, &vao));
+ * CHECK_GL_ERROR(glBindVertexArray(vao));
+ * 
+ * CHECK_GL_ERROR(glGenBuffers(3, vbo));
+ * program = Program(uniforms, vertexShader, geometryShader, fragmentShader);
+ * GLint programId = program.getProgramId();
+ *
+ * // Bind vertices, normals, attribures, the fragDataLocation, etc.
+ * // CODE HERE
+ *
+ * program.link();
+ *
+ * // Add the index (aka the faces)
+ * // CODE HERE
+ *
+ * // Add uniform locations
+ * program.addUniformLocations();
+ * 
+ * 
+ * 
+ * // During render time:
+ * CHECK_GL_ERROR(glBindVertexArray(vao));
+ * program.use();
+ * program.bindUniforms();
+ * 
+ * // Draw vertices
+ * CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, faces.size() * 3, GL_UNSIGNED_INT, 0));
+ * ```
+ * 
+ * For the complete example, take a look at src/triangle_mesh.cpp
+ */
 class Program {
 public:
     /**
@@ -93,26 +143,50 @@ public:
     Program();
 
     /**
-     * Main constructor for shader. Creates the shader with a program and a set of uniforms.
+     * Main constructor for shader. Creates the shader with a program and a set
+     * of uniforms. It will also compile the shaders.
      * @param uniforms A vector of uniforms to be passed into the shader
-     * @param s The string representing either a file name or the shader program itself
-     * @param file If true, `s` represents a file name. Otherwise, `s` represents a string with the program
+     * @param s        The string representing either a file name or the shader
+     *                 program itself
+     * @param file     If true, `s` represents a file name. Otherwise, `s`
+     *                 represents a string with the program
      */
-    Program(std::vector<ShaderUniform> uniforms, Shader vertexShader, Shader geometryShader, Shader fragmentShader);
+    Program(std::vector<ShaderUniform> uniforms,
+            Shader vertexShader, Shader geometryShader, Shader fragmentShader);
 
+    /**
+     * Returns the ID for the shader program. This is generated when the
+     * Program() object is created, at compilation..
+     */
     GLint getProgramId() { return shaderProgram; }
 
+    /**
+     * Adds the indeces for the uniforms to a list of locations by using
+     * `glGetUniformLocation()`.
+     */
     void addUniformLocations();
 
+    /**
+     * Binds the uniforms to their corresponding data sources (basically using
+     * the `glUniform*()` functions.
+     */
     void bindUniforms();
 
+    /**
+     * Runs the linker on the shader program.
+     */
     void link();
+
+    /**
+     * Enables the shader program using `glUseProgram()`. This should run
+     * before rendering the associated mesh.
+     */
     void use();
 
     ~Program();
 private:
     /**
-     * Compiles the shader on the GPU. Lifted mostly from project 3
+     * Compiles the shader on the GPU. Lifted mostly from CS 354 project 3
      */
     void compile();
 
