@@ -19,10 +19,10 @@ namespace maguey {
 class KeyInput {
 public:
     /**
-     * Main constructor for the keyboard input. Initializes all button states.
+     * Main constructor for the keyboard input. Initializes all key states.
      *
-     * @param window The GLFW Window associated with this keyboard input with
-     *               which is used to set up the keyboard callback.
+     * @param window The GLFW Window associated with this keyboard input. It is
+     *               used to set up the keyboard callback.
      */
     KeyInput(GLFWwindow* window);
 
