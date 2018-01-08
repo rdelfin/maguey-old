@@ -18,7 +18,7 @@ namespace maguey {
 
 void scaleToMonitor(GLFWmonitor* monitor, glm::ivec2& window_size);
 
-Game::Game(const std::string& windowName, glm::ivec2 window_size, bool fullscreen)
+Game::Game(const std::string& window_name, glm::ivec2 window_size, bool fullscreen)
     : window_size(window_size) {
     if (!glfwInit()) exit(EXIT_FAILURE);
     //glfwSetErrorCallback(ErrorCallback);
@@ -36,7 +36,7 @@ Game::Game(const std::string& windowName, glm::ivec2 window_size, bool fullscree
         scaleToMonitor(monitor, window_size);
 
     this->window = glfwCreateWindow(window_size.x, window_size.y,
-                                    windowName.data(), monitor, nullptr);
+                                    window_name.data(), monitor, nullptr);
     CHECK_SUCCESS(this->window != nullptr);
     glfwMakeContextCurrent(this->window);
     glewExperimental = GL_TRUE;
