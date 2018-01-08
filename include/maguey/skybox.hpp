@@ -16,14 +16,42 @@
 
 namespace maguey {
 
+/**
+ * A class representing a box surrounding the world where background textures
+ * can be placed.
+ */
 class Skybox {
 public:
+    /**
+     * Main constructor, creates an empty skybox. Load needs to be called next.
+     */
     Skybox();
+
+    /**
+     * Loads in the textures for each of the faces of the skybox.
+     * 
+     * @param right  The file path to the image of the positive-x side of the
+     *               cube
+     * @param left   The file path to the image of the negative-x side of the
+     *               cube
+     * @param top    The file path to the image of the positive-y side of the
+     *               cube
+     * @param bottom The file path to the image of the negative-y side of the
+     *               cube
+     * @param back   The file path to the image of the positive-z side of the
+     *               cube
+     * @param front  The file path to the image of the negative-z side of the
+     *               cube
+     * @param c      The camera object associated with this view.
+     */
     void load(const std::string& right, const std::string& left,
             const std::string& top, const std::string& bottom,
             const std::string& back, const std::string& front,
             Camera& c);
 
+    /**
+     * Renders the skybox on the screen.
+     */
     void draw();
 
     ~Skybox();
