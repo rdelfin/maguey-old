@@ -6,12 +6,23 @@
 
 #include <maguey/mouse_input.hpp>
 
-void MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y);
-void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-
 glm::vec2 CURSOR_POSITION;
 bool BUTTON_STATES[TOTAL_MOUSE_BUTTONS];
 static bool MOUSE_BINDED = false;
+
+void MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y) {
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    CURSOR_POSITION = glm::vec2(mouse_x / width, mouse_y / height);
+}
+
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    if(action == GLFW_PRESS)
+        BUTTON_STATES[button] = true;
+    if(action == GLFW_RELEASE)
+        BUTTON_STATES[button] = false;
+}
+
 
 namespace maguey {
 
@@ -59,20 +70,6 @@ bool MouseInput::validButton(int button) {
 
 MouseInput::~MouseInput() {
 
-}
-
-void MousePosCallback(GLFWwindow* window, double mouse_x, double mouse_y) {
-    int width, height;
-    glfwGetWindowSize(window, &width, &height);
-    CURSOR_POSITION = glm::vec2(mouse_x / width, mouse_y / height);
-}
-
-
-void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-    if(action == GLFW_PRESS)
-        BUTTON_STATES[button] = true;
-    if(action == GLFW_RELEASE)
-        BUTTON_STATES[button] = false;
 }
 
 } // namespace maguey

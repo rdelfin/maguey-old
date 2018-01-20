@@ -9,9 +9,12 @@
 bool KEY_STATES[TOTAL_KEYS];
 static bool KEYS_BINDED = false;
 
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if(action == GLFW_PRESS)
+        KEY_STATES[key] = true;
+    if(action == GLFW_RELEASE)
+        KEY_STATES[key] = false;
+}
 
 namespace maguey {
 
@@ -49,14 +52,6 @@ bool KeyInput::validKey(int key) {
 }
 
 KeyInput::~KeyInput() {
-
-}
-
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if(action == GLFW_PRESS)
-        KEY_STATES[key] = true;
-    if(action == GLFW_RELEASE)
-        KEY_STATES[key] = false;
 
 }
 

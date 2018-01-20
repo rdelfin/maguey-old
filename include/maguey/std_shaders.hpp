@@ -10,7 +10,7 @@
 
 namespace maguey {
 
-const std::string MESH_SHADER_VERT =
+static const std::string MESH_SHADER_VERT =
 R"zzz(
 #version 400 core
 
@@ -33,7 +33,7 @@ void main() {
 }
 )zzz";
 
-const std::string MESH_SHADER_GEOM =
+static const std::string MESH_SHADER_GEOM =
 R"zzz(
 #version 400 core
 
@@ -69,7 +69,7 @@ void main() {
 }
 )zzz";
 
-const std::string MESH_SHADER_FRAG =
+static const std::string MESH_SHADER_FRAG =
 R"zzz(
 #version 400 core
 #line 1
@@ -98,7 +98,7 @@ void main() {
 )zzz";
 
 
-std::string SKYBOX_SHADER_VERT =
+static const std::string SKYBOX_SHADER_VERT =
 R"zzz(
 #version 400 core
 
@@ -116,7 +116,7 @@ void main()
 }
 )zzz";
 
-std::string SKYBOX_SHADER_GEOM =
+static const std::string SKYBOX_SHADER_GEOM =
 R"zzz(
 #version 400 core
 
@@ -140,7 +140,7 @@ void main() {
 }
 )zzz";
 
-std::string SKYBOX_SHADER_FRAG =  R"zzz(
+static const std::string SKYBOX_SHADER_FRAG =  R"zzz(
 #version 400 core
 out vec4 vertex_color;
 
