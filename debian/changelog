@@ -1,7 +1,5 @@
-maguey (1.0.7) xenial; urgency=low
+maguey (1.0.8) xenial; urgency=low
 
-  * Moved everything into the maguey workspace
-  * Added default shaders
-  * Documented all header files
+  * Fixed miscellaneous linker errors.
 
- -- Ricardo Delfin Garcia <ricardo.delfin.garcia@gmail.com>  Tue, 26 Dec 2017 22:16:57 -0600
+ -- Ricardo Delfin Garcia <ricardo.delfin.garcia@gmail.com>  Fri, 19 Jan 2018 23:19:07 -0600
