@@ -91,4 +91,3 @@ When incrementing the version, there are three files that need to change:
 
 - `CMakeLists.txt`: Increment version.
 - `debian/changelog`: Increment version and add changes
-- `magueyConfig.cmake.in`: Increment version used for search.
