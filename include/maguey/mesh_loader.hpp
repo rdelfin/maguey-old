@@ -50,11 +50,11 @@ public:
      * @param fragmentShader Default fragment shader if none is specified by
      *                       the model.
      */
-    virtual std::unordered_map<std::string, TriangleMesh> loadFile(const std::string& path, bool& error,
-                                                                   Camera& camera,
-                                                                   const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
-                                                                   const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
-                                                                   const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const {
+    virtual std::unordered_map<std::string, TriangleMesh*> loadFile(const std::string& path, bool& error,
+                                                                    Camera& camera,
+                                                                    const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+                                                                    const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+                                                                    const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const {
         error = false;
 
         std::ifstream fileStream(path);
@@ -87,11 +87,11 @@ public:
      * @param fragmentShader Default fragment shader if none is specified by
      *                       the model.
      */
-    virtual std::unordered_map<std::string, TriangleMesh>  loadString(const std::string& contents, bool& error,
-                                                                      Camera& camera,
-                                                                      const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
-                                                                      const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
-                                                                      const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const = 0;
+    virtual std::unordered_map<std::string, TriangleMesh*>  loadString(const std::string& contents, bool& error,
+                                                                       Camera& camera,
+                                                                       const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+                                                                       const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+                                                                       const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const = 0;
 
     ~MeshLoader() {
 

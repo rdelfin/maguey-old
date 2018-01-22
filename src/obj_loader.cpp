@@ -110,7 +110,7 @@ bool ObjLoader::process_face(const std::string& line, maguey::internal::index_da
 
 bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, internal::index_data>& index_map,
                                       const std::vector<glm::vec4>& vertexRaw, const std::vector<glm::vec4>& normalRaw,
-                                      std::unordered_map<std::string, TriangleMesh>& meshes,
+                                      std::unordered_map<std::string, TriangleMesh*>& meshes,
                                       Camera& camera,
                                       const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) const {
 
@@ -138,18 +138,18 @@ bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, inte
             faces.push_back(glm::uvec3(start_vertices, start_vertices+1, start_vertices+2));
         }
 
-        meshes.insert({data_pair.first, TriangleMesh()});
-        meshes[data_pair.first].load(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
+        meshes.insert({data_pair.first, new TriangleMesh});
+        meshes[data_pair.first]->load(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
     }
 }
 
-std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::string& contents, bool& error,
-                                                                    Camera& camera,
-                                                                    const Shader& vertexShader,
-                                                                    const Shader& geometryShader,
-                                                                    const Shader& fragmentShader) const {
+std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::string& contents, bool& error,
+                                                                     Camera& camera,
+                                                                     const Shader& vertexShader,
+                                                                     const Shader& geometryShader,
+                                                                     const Shader& fragmentShader) const {
     // Result map returned at the end
-    std::unordered_map<std::string, TriangleMesh> meshes;
+    std::unordered_map<std::string, TriangleMesh*> meshes;
     // Set error flag to false
     error = false;
 
@@ -180,7 +180,7 @@ std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::s
             if(!(lineStream >> header >> gname)) {
                 std::cerr << "Invalid group on line " << line_num << ": \"" << line << "\"" << std::endl;
                 error = true;
-                return std::unordered_map<std::string, TriangleMesh>();
+                return std::unordered_map<std::string, TriangleMesh*>();
             }
 
             group = gname;
@@ -195,7 +195,7 @@ std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::s
             if(!(lineStream >> header >> x >> y >> z)) {
                 std::cerr << "Invalid vertex on line " << line_num << ": \"" << line << "\"" << std::endl;
                 error = true;
-                return std::unordered_map<std::string, TriangleMesh>();
+                return std::unordered_map<std::string, TriangleMesh*>();
             }
 
             vertexRaw.push_back(glm::vec4(x, y, z, 1.0f));
@@ -210,7 +210,7 @@ std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::s
             if(!(lineStream >> header >> x >> y >> z)) {
                 std::cerr << "Invalid vertex normal line " << line_num << ": \"" << line << "\"" << std::endl;
                 error = true;
-                return std::unordered_map<std::string, TriangleMesh>();
+                return std::unordered_map<std::string, TriangleMesh*>();
             }
 
             normalRaw.push_back(glm::vec4(x, y, z, 0.0f));
@@ -221,7 +221,7 @@ std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::s
                 index_map.insert({group, internal::index_data()});
             if(!process_face(line, index_map[group], line_num)) {
                 error = true;
-                return std::unordered_map<std::string, TriangleMesh>();
+                return std::unordered_map<std::string, TriangleMesh*>();
             }
         }
     }
@@ -230,7 +230,7 @@ std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::s
     if(!load_data_into_meshes(index_map, vertexRaw, normalRaw, meshes, camera, vertexShader, geometryShader, fragmentShader)) {
         std::cerr << "There was an error loading indices into meshes. Consult errors above." << std::endl;
         error = true;
-        return std::unordered_map<std::string, TriangleMesh>();
+        return std::unordered_map<std::string, TriangleMesh*>();
     }
 
     return meshes;
