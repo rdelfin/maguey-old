@@ -12,6 +12,7 @@
 
 #include <maguey/game_time.hpp>
 #include <maguey/mesh_loader.hpp>
+#include <maguey/program.hpp>
 #include <maguey/triangle_mesh.hpp>
 
 namespace maguey {
@@ -60,9 +61,30 @@ public:
 
     /**
      * Add additional TriangleMesh
-     * @para m Mesh to add.
+     * @param m Mesh to add.
      */
     void addMesh(TriangleMesh* m);
+
+    /**
+     * Adds all meshes corresponding to a 3D model file.
+     *
+     * @param filePath       File path to load.
+     * @param meshLoader     Loader to use for this file format.
+     * @param camera         Camera object, used to for the data sources.
+     * @param vertexShader   Vertex shader used for all meshes in file, unless
+     *                       a different shader is specified in the file.
+     * @param geometryShader Geometry shader used for all meshes in file,
+     *                       unless a different shader is specified in the
+     *                       file.
+     * @param fragmentShader Fragment shader used for all meshes in file,
+     *                       unless a different shader is specified in the
+     *                       file.
+     */
+    void loadFile(const std::string& filePath, const MeshLoader& meshLoader,
+                  Camera& camera,
+                  const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+                  const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+                  const Shader& fragmentShader = Shader(MESH_SHADER_FRAG, false));
 
     /**
      * Run every frame to update movement

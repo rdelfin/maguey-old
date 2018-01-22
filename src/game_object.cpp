@@ -8,6 +8,8 @@
 
 #include <maguey/game_object.hpp>
 
+#include <unordered_map>
+
 namespace maguey {
 
 // TODO: Implement equals operator to either create a copy of the vector and remove from the one being copied, to disable it, or switch to shared_ptr
@@ -26,6 +28,17 @@ GameObject::GameObject(std::vector<TriangleMesh*> m) : forward(1.0, 0.0, 0.0), u
 
 void GameObject::addMesh(TriangleMesh* m) {
     meshes.push_back(m);
+}
+
+
+void GameObject::loadFile(const std::string& filePath, const MeshLoader& meshLoader,
+                          Camera& camera,
+                          const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
+    bool error;
+    std::unordered_map<std::string, TriangleMesh*> new_meshes = meshLoader.loadFile(filePath, error, camera, vertexShader, geometryShader, fragmentShader);
+
+    for(auto it = new_meshes.begin(); it != new_meshes.end(); ++it)
+        this->addMesh(it->second);
 }
 
 void GameObject::setPosition(glm::vec3 p) { this->pos = p; }
