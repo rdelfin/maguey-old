@@ -18,8 +18,6 @@
 
 namespace maguey {
 
-class MeshLoader;
-
 /**
  * Represents a basic triangle mesh, with basic rendering information,
  * positioning, scaling and rotation functionality..
@@ -59,22 +57,6 @@ public:
               const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
               const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
               const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false));
-
-    /**
-     * Loads a new triangle mesh from a file using a path and a mesh loader, a
-     * camera, and shaders.
-     *
-     * @param path           The path to the file being loaded in as a mesh.
-     * @param loader         The MeshLoader that will interpret the file.
-     * @param camera         The camera object associated with this rendering.
-     * @param vertexShader   The vertex shader to be used for this mesh.
-     * @param geometryShader The geometry shader to be used for this mesh.
-     * @param fragmentShader The fragment shader to be used for this mesh.
-     */
-    void load(const std::string& path, const MeshLoader& loader, Camera& camera,
-              const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
-              const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
-              const Shader& fragmentShader = Shader(MESH_SHADER_FRAG, false));
 
     /**
      * Sets the position of the mesh in world coordinates.
