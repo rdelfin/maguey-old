@@ -11,9 +11,22 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include <maguey/triangle_mesh.hpp>
+#include <maguey/std_shaders.hpp>
+#include <maguey/program.hpp>
+
 #include <vector>
+#include <unordered_map>
+#include <string>
 
 namespace maguey {
+
+    namespace internal {
+        typedef struct {
+            std::vector<glm::uvec3> faceIdx;
+            std::vector<glm::uvec3> normalIdx;
+        } index_data;
+    }
 
 /**
  * Class used to load in a triangle mesh from a Wavefront .obj file.
@@ -27,31 +40,39 @@ public:
     ObjLoader();
     
     /**
-     * Uses the contents string to fill up the three vectors with the vertex
-     * data stored in the Wavefront .obj file. Returns whether the operation
-     * succeded or not. Notably, it'll return false if it finds an invalid
-     * line. In this case, the contents of vertices, normals, and faces are not
-     * guaranteed to be in their initial state.
+     * Uses the contents string to create a set of triangle meshes generated
+     * from the Wavefront .obj file (each file might contain multiple objects).
+     * The names for each triangle mesh is based on 
      * 
      * @param contents The contents of the file format being loaded in.
-     * @param vertices A reference to the vertice vector that will be edited to
-     *                 contain the vertices specified in the contents.
-     * @param normals  A reference to the normal vector that will be edited to
-     *                 contain the normals specified in the contents.
-     * @param faces    A reference to the face vector that will be edited to
-     *                 contain the indices of the vertices and normals that
-     *                 make up the faces specified in the contents.
-     *                 Specifically, each index in each face corresponds to
-     *                 both the vertex and normal.
+     * @param error          Is set to true if there was an error (notably if
+     *                       an invalid line is found). Else is set to false.
+     * @param camera         Camera object used to create the TriangleMesh
+     *                       objects.
+     * @param vertexShader   Default vertex shader if none is specified by the
+     *                       model.
+     * @param geometryShader Default geometry shader if none is specified by
+     *                       the model.
+     * @param fragmentShader Default fragment shader if none is specified by
+     *                       the model.
      */
-    virtual bool loadString(const std::string& contents,
-                            std::vector<glm::vec4>& vertices, std::vector<glm::vec4>& normals,
-                            std::vector<glm::uvec3>& faces) const;
+    virtual std::unordered_map<std::string, TriangleMesh>  loadString(const std::string& contents, bool& error,
+                                                                      Camera& camera,
+                                                                      const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+                                                                      const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+                                                                      const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const;
     ~ObjLoader();
 
 private:
-    bool process_face(const std::string& line, std::vector<glm::uvec3>& facesRaw, std::vector<glm::uvec3>& normalIdx) const;
+    bool process_face(const std::string& line, internal::index_data& mesh_index_data, int line_num) const;
+    
     std::vector<std::vector<uint>> parse_line_elems(const std::vector<std::string>& line_elems) const;
+    
+    bool load_data_into_meshes(const std::unordered_map<std::string, internal::index_data>& index_map,
+                               const std::vector<glm::vec4>& vertexRaw, const std::vector<glm::vec4>& normalRaw,
+                               std::unordered_map<std::string, TriangleMesh>& meshes,
+                               Camera& camera,
+                               const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) const;
 };
 
 } // namespace maguey

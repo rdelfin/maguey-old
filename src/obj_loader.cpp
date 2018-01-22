@@ -4,15 +4,18 @@
 
 #define GLM_FORCE_RADIANS
 
+#include <maguey/camera.hpp>
 #include <maguey/obj_loader.hpp>
+#include <maguey/program.hpp>
+#include <maguey/triangle_mesh.hpp>
 #include <maguey/util.hpp>
 
 #include <algorithm>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
-
+#include <unordered_map>
 
 namespace maguey {
 
@@ -20,8 +23,8 @@ ObjLoader::ObjLoader() {
 
 }
 
-std::vector<std::vector<uint>> ObjLoader::parse_line_elems(const std::vector<std::string>& line_elems) const {
-    std::vector<std::vector<uint>> result;
+std::vector< std::vector<uint> > ObjLoader::parse_line_elems(const std::vector<std::string>& line_elems) const {
+    std::vector< std::vector<uint> > result;
     for(const std::string& vert : line_elems) {
         std::vector<std::string> vert_vals_str = split(vert, '/');
         std::vector<uint> vert_vals_uint;
@@ -35,7 +38,7 @@ std::vector<std::vector<uint>> ObjLoader::parse_line_elems(const std::vector<std
     return result;
 }
 
-bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& facesRaw, std::vector<glm::uvec3>& normalIdx) const {
+bool ObjLoader::process_face(const std::string& line, maguey::internal::index_data& mesh_index_data, int line_num) const {
     std::string header;
 
     std::vector<std::string> lineElems = split(line, ' ');
@@ -46,7 +49,7 @@ bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& f
         return false;
     }
 
-    std::vector<std::vector<uint>> vals = parse_line_elems(lineElems);
+    std::vector< std::vector<uint> > vals = parse_line_elems(lineElems);
 
     // Check that all values have same number of elements
     for(size_t i = 0; i < vals.size() - 1; i++) {
@@ -62,11 +65,11 @@ bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& f
     // Regular triangle
     if(vals.size() == 3) {
         if (vals[0].size() == 1) {
-            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
-            normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+            mesh_index_data.faceIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+            mesh_index_data.normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
         } else if (vals[0].size() == 3) {
-            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
-            normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[2][2] - 1));
+            mesh_index_data.faceIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[2][0] - 1));
+            mesh_index_data.normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[2][2] - 1));
         } else {
             std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
                         << line << "\"" << std::endl;
@@ -78,20 +81,20 @@ bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& f
     else if(vals.size() == 4) {
         if (vals[0].size() == 1) {
             // First triangle (1st, 2nd and 4th vertices)
-            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
-            normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
+            mesh_index_data.faceIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
+            mesh_index_data.normalIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
 
             // Second triangle (2nd, 3rd and 4th vertices)
-            facesRaw.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
-            normalIdx.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
+            mesh_index_data.faceIdx.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
+            mesh_index_data.normalIdx.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
         } else if (vals[0].size() == 3) {
             // First triangle (1st, 2nd and 4th vertices)
-            facesRaw.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
-            normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[3][2] - 1));
+            mesh_index_data.faceIdx.push_back(glm::uvec3(vals[0][0] - 1, vals[1][0] - 1, vals[3][0] - 1));
+            mesh_index_data.normalIdx.push_back(glm::uvec3(vals[0][2] - 1, vals[1][2] - 1, vals[3][2] - 1));
 
             // Second triangle (2nd, 3rd and 4th vertices)
-            facesRaw.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
-            normalIdx.push_back(glm::uvec3(vals[1][2] - 1, vals[2][2] - 1, vals[3][2] - 1));
+            mesh_index_data.faceIdx.push_back(glm::uvec3(vals[1][0] - 1, vals[2][0] - 1, vals[3][0] - 1));
+            mesh_index_data.normalIdx.push_back(glm::uvec3(vals[1][2] - 1, vals[2][2] - 1, vals[3][2] - 1));
         } else {
             std::cerr << "Invalid face line. One coordinate has the wrong number of elements (either 1 or 3): \""
                         << line << "\"" << std::endl;
@@ -105,23 +108,84 @@ bool ObjLoader::process_face(const std::string& line, std::vector<glm::uvec3>& f
     return true;
 }
 
-bool ObjLoader::loadString(const std::string &contents,
-                           std::vector<glm::vec4> &vertices, std::vector<glm::vec4> &normals,
-                           std::vector<glm::uvec3> &faces) const {
-    // Clear out all vectors to keep at same length
-    vertices.clear();
-    normals.clear();
-    faces.clear();
+bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, internal::index_data>& index_map,
+                                      const std::vector<glm::vec4>& vertexRaw, const std::vector<glm::vec4>& normalRaw,
+                                      std::unordered_map<std::string, TriangleMesh>& meshes,
+                                      Camera& camera,
+                                      const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) const {
 
-    std::vector<glm::uvec3> facesRaw;
+    for(const std::pair<std::string, internal::index_data>& data_pair : index_map) {
+        const internal::index_data& mesh_index_data = data_pair.second;
+        std::vector<glm::vec4> vertices, normals;
+        std::vector<glm::uvec3> faces;
+
+
+        for(size_t i = 0; i < mesh_index_data.faceIdx.size(); i++) {
+            size_t start_vertices = vertices.size();
+            glm::uvec3 face = mesh_index_data.faceIdx[i];
+            glm::uvec3 normal = mesh_index_data.normalIdx[i];
+
+            // Push faces and normals.
+            vertices.push_back(vertexRaw[face[0]]);
+            vertices.push_back(vertexRaw[face[1]]);
+            vertices.push_back(vertexRaw[face[2]]);
+
+            normals.push_back(normalRaw[normal[0]]);
+            normals.push_back(normalRaw[normal[1]]);
+            normals.push_back(normalRaw[normal[2]]);
+
+            // Create face vector and push
+            faces.push_back(glm::uvec3(start_vertices, start_vertices+1, start_vertices+2));
+        }
+
+        meshes.insert({data_pair.first, TriangleMesh()});
+        meshes[data_pair.first].load(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
+    }
+}
+
+std::unordered_map<std::string, TriangleMesh> ObjLoader::loadString(const std::string& contents, bool& error,
+                                                                    Camera& camera,
+                                                                    const Shader& vertexShader,
+                                                                    const Shader& geometryShader,
+                                                                    const Shader& fragmentShader) const {
+    // Result map returned at the end
+    std::unordered_map<std::string, TriangleMesh> meshes;
+    // Set error flag to false
+    error = false;
+
     std::vector<glm::vec4> vertexRaw;
     std::vector<glm::vec4> normalRaw;
-    std::vector<glm::uvec3> normalIdx;
+
+    std::unordered_map<std::string, internal::index_data> index_map;
 
     std::stringstream ss(contents);
     std::string line;
 
+    // Used for debugging purposes
+    int line_num = 0;
+
+    // Vertex state
+    std::string group = "";
+
     while(std::getline(ss, line)) {
+        line_num++;
+
+        // Group definition: Either "g group_name" or "g obj_name group_name".
+        // More than one argument is ignored
+        if(line[0] == 'g') {
+            std::stringstream lineStream(line);
+
+            std::string header, gname;
+
+            if(!(lineStream >> header >> gname)) {
+                std::cerr << "Invalid group on line " << line_num << ": \"" << line << "\"" << std::endl;
+                error = true;
+                return std::unordered_map<std::string, TriangleMesh>();
+            }
+
+            group = gname;
+        }
+
         if(line[0] == 'v' && line[1] == ' ') {
             std::stringstream lineStream(line);
 
@@ -129,8 +193,9 @@ bool ObjLoader::loadString(const std::string &contents,
             double x, y, z;
 
             if(!(lineStream >> header >> x >> y >> z)) {
-                std::cerr << "Invalid vertex line: \"" << line << "\"" << std::endl;
-                return false;
+                std::cerr << "Invalid vertex on line " << line_num << ": \"" << line << "\"" << std::endl;
+                error = true;
+                return std::unordered_map<std::string, TriangleMesh>();
             }
 
             vertexRaw.push_back(glm::vec4(x, y, z, 1.0f));
@@ -143,38 +208,32 @@ bool ObjLoader::loadString(const std::string &contents,
             double x, y, z;
 
             if(!(lineStream >> header >> x >> y >> z)) {
-                std::cerr << "Invalid vertex normal line: \"" << line << "\"" << std::endl;
-                return false;
+                std::cerr << "Invalid vertex normal line " << line_num << ": \"" << line << "\"" << std::endl;
+                error = true;
+                return std::unordered_map<std::string, TriangleMesh>();
             }
 
             normalRaw.push_back(glm::vec4(x, y, z, 0.0f));
         }
 
         else if(line[0] == 'f') {
-            if(!process_face(line, facesRaw, normalIdx))
-                return false;
+            if(index_map.count(group) == 0)
+                index_map.insert({group, internal::index_data()});
+            if(!process_face(line, index_map[group], line_num)) {
+                error = true;
+                return std::unordered_map<std::string, TriangleMesh>();
+            }
         }
     }
 
-    for(size_t i = 0; i < facesRaw.size(); i++) {
-        size_t start_vertices = vertices.size();
-        glm::uvec3 face = facesRaw[i];
-        glm::uvec3 normal = normalIdx[i];
 
-        // Push faces and normals.
-        vertices.push_back(vertexRaw[face[0]]);
-        vertices.push_back(vertexRaw[face[1]]);
-        vertices.push_back(vertexRaw[face[2]]);
-
-        normals.push_back(normalRaw[normal[0]]);
-        normals.push_back(normalRaw[normal[1]]);
-        normals.push_back(normalRaw[normal[2]]);
-
-        // Create face vector and push
-        faces.push_back(glm::uvec3(start_vertices, start_vertices+1, start_vertices+2));
+    if(!load_data_into_meshes(index_map, vertexRaw, normalRaw, meshes, camera, vertexShader, geometryShader, fragmentShader)) {
+        std::cerr << "There was an error loading indices into meshes. Consult errors above." << std::endl;
+        error = true;
+        return std::unordered_map<std::string, TriangleMesh>();
     }
 
-    return true;
+    return meshes;
 }
 
 ObjLoader::~ObjLoader() {

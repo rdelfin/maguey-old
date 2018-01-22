@@ -15,6 +15,8 @@
 #include <unordered_map>
 
 #include <maguey/triangle_mesh.hpp>
+#include <maguey/program.hpp>
+#include <maguey/std_shaders.hpp>
 
 namespace maguey {
 
@@ -59,7 +61,7 @@ public:
 
         if(!fileStream) {
             error = true;
-            return;
+            return {};
         }
 
         std::string fileContents = std::string(std::istreambuf_iterator<char>(fileStream),

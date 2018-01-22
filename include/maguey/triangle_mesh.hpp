@@ -12,12 +12,13 @@
 #include <GLFW/glfw3.h>
 
 #include <maguey/camera.hpp>
-#include <maguey/mesh_loader.hpp>
 #include <maguey/renderable.hpp>
 #include <maguey/program.hpp>
 #include <maguey/std_shaders.hpp>
 
 namespace maguey {
+
+class MeshLoader;
 
 /**
  * Represents a basic triangle mesh, with basic rendering information,
