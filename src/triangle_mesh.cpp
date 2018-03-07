@@ -139,4 +139,8 @@ TriangleMesh::~TriangleMesh() {
 
 }
 
+const std::vector<glm::vec4>& TriangleMesh::getVertices() { return this->vertices; }
+const std::vector<glm::vec4>& TriangleMesh::getNormals() { return this->normals; }
+const std::vector<glm::uvec3>& TriangleMesh::getFaces() { return this->faces; }
+
 } // namespace maguey

@@ -6,15 +6,18 @@
 #define PROCEDURALCITIES_TRIANGLEMESH_H
 
 #include <functional>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <gtest/gtest_prod.h>
 
 #include <maguey/camera.hpp>
 #include <maguey/renderable.hpp>
 #include <maguey/program.hpp>
 #include <maguey/std_shaders.hpp>
+
 
 namespace maguey {
 
@@ -108,6 +111,26 @@ public:
     virtual void draw() override;
 
     virtual ~TriangleMesh();
+
+    //*********************************************
+    //*           Functions for tests             *
+    //*********************************************
+
+    /**
+     * Getter for the vertices. Used only for test purposes.
+     */
+    const std::vector<glm::vec4>& getVertices();
+
+    /**
+     * Getter for the vertices. Used only for test purposes.
+     */
+    const std::vector<glm::vec4>& getNormals();
+
+    /**
+     * Getter for the vertices. Used only for test purposes.
+     */
+    const std::vector<glm::uvec3>& getFaces();
+
 protected:
     void loadImpl(const std::vector<glm::vec4>& vertices, const std::vector<glm::vec4>& normals, const std::vector<glm::uvec3>& faces,
                   Camera& camera,
