@@ -140,9 +140,9 @@ bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, inte
 
         meshes.insert({data_pair.first, new TriangleMesh});
         meshes[data_pair.first]->load(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
-
-        return true;
     }
+
+    return true;
 }
 
 std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::string& contents, bool& error,
