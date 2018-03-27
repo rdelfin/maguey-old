@@ -9,10 +9,11 @@ add_executable(loader_test ${pwd}/loader_test.cpp
                            ${pwd}/../src/triangle_mesh.cpp
                            ${pwd}/../src/camera.cpp
                            ${pwd}/../src/program.cpp
-                           ${pwd}/../src/debuggl.cpp)
+                           ${pwd}/../src/debuggl.cpp
+                           ${pwd}/../src/material.cpp)
 
 target_link_libraries(main_test   gtest gtest_main)
 target_link_libraries(loader_test gtest gtest_main ${stdgl_libraries})
 
-add_test(NAME main_test  COMMAND main_test  )
+add_test(NAME main_test  COMMAND main_test)
 add_test(NAME loader_test COMMAND loader_test)
