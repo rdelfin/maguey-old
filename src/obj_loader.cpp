@@ -150,6 +150,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
                                                                      const Shader& fragmentShader) const {
     // Result map returned at the end
     std::unordered_map<std::string, TriangleMesh*> meshes;
+    std::unordered_map<std::string, Material> material;
     // Set error flag to false
     error = false;
 
@@ -220,6 +221,28 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
                 error = true;
                 return std::unordered_map<std::string, TriangleMesh*>();
             }
+        }
+
+        else if(header == "mtllib") {
+            std::string file_name;
+
+            if(!(line_stream >> file_name)) {
+                std::cerr << "Invalid material lib line " << line_num << ": \"" << line << "\"" << std::endl;
+                error = true;
+                return std::unordered_map<std::string, TriangleMesh*>(); 
+            }
+
+            bool new_error;
+            std::unordered_map<std::string, Material> new_mats = loadMaterialFile(file_name, new_error);
+
+            if(new_error) {
+                std::cerr << "There was an error reading the material file. Exiting..." << std::endl;
+                error = true;
+                return std::unordered_map<std::string, TriangleMesh*>();
+            }
+
+            // Merge the materials
+            material.insert(new_mats.begin(), new_mats.end());
         }
     }
 
