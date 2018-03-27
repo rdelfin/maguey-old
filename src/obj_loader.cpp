@@ -251,6 +251,8 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std:
 std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const std::string& contents, bool& error) {
     std::unordered_map<std::string, Material> materials;
 
+    error = false;
+
     std::stringstream ss(contents);
     std::string line;
     
@@ -290,38 +292,69 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
 
         else if(header == "Ka") {
             float r, g, b;
-            line_stream >> r >> g >> b;
+
+            if(!(line_stream >> r >> g >> b)) {
+                std::cerr << "There was an error reading the Ka property (ambient color) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material>();
+            }
+
             ambient = glm::vec3(r, g, b);
             ambient_set = true;
         }
 
         else if(header == "Kd") {
             float r, g, b;
-            line_stream >> r >> g >> b;
+            if(!(line_stream >> r >> g >> b)) {
+                std::cerr << "There was an error reading the Kd property (Difuse color) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material>();
+            }
+
             difuse = glm::vec3(r, g, b);
             difuse_set = true;
         }
 
         else if(header == "Ks") {
             float r, g, b;
-            line_stream >> r >> g >> b;
+            if(!(line_stream >> r >> g >> b)) {
+                std::cerr << "There was an error reading the Ks property (specular color) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material>();
+            }
+
             specular = glm::vec3(r, g, b);
             difuse_set = true;
         }
 
         else if(header == "Ns") {
-            line_stream >> specular_exp;
+            if(!(line_stream >> specular_exp)) {
+                std::cerr << "There was an error reading the Ns property (specular exponent) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material>();
+            }
+
             specular_exp_set = true;
         }
 
         else if(header == "d") {
-            line_stream >> transparency;
+            if(!(line_stream >> transparency)) {
+                std::cerr << "There was an error reading the d property (opacity) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material>();
+            }
+
             transparency = 1.0 - transparency;
             transparency_set = true; 
         }
 
         else if(header == "Tr") {
-            line_stream >> transparency;
+            if(!(line_stream >> transparency)) {
+                std::cerr << "There was an error reading the Tr property (transparency) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material>();
+            }
+
             transparency_set = true;
         }
         else
