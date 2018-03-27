@@ -236,6 +236,112 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
     return meshes;
 }
 
+std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std::string& file, bool& error) {
+    error = false;
+
+    std::ifstream fileStream(file);
+
+    if(!fileStream) {
+        error = true;
+        return {};
+    }
+
+    std::string fileContents = std::string(std::istreambuf_iterator<char>(fileStream),
+                                            std::istreambuf_iterator<char>());
+    return loadMaterialString(fileContents, error);
+}
+
+std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const std::string& contents, bool& error) {
+    std::unordered_map<std::string, Material> materials;
+
+    std::stringstream ss(contents);
+    std::string line;
+    
+    bool created_material = false;
+    std::string material_name;
+    glm::vec3 ambient;
+    glm::vec3 difuse;
+    glm::vec3 specular;
+    float specular_exp;
+    float transparency;
+    bool ambient_set = false, difuse_set = false, specular_set = false, specular_exp_set = false, transparency_set = false;
+
+    while(std::getline(ss, line)) {
+        std::stringstream line_stream(line);
+        std::string header;
+        line_stream >> header;
+
+        // Check for new material line
+        if(header == "newmtl") {
+            std::stringstream line_stream(line);
+            std::string header, name;
+
+            // Save previous material
+            if(created_material) {
+                if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set)
+                    materials.insert({material_name, Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
+                else
+                    std::cerr << "There was an error loading material " << material_name << ". Some components were missing." << std::endl;
+            }
+
+            material_name = name;
+            ambient_set = difuse_set = specular_set = specular_exp_set = transparency_set = false;
+            created_material = true;
+        }
+
+        // Different material properties below set here
+
+        else if(header == "Ka") {
+            float r, g, b;
+            line_stream >> r >> g >> b;
+            ambient = glm::vec3(r, g, b);
+            ambient_set = true;
+        }
+
+        else if(header == "Kd") {
+            float r, g, b;
+            line_stream >> r >> g >> b;
+            difuse = glm::vec3(r, g, b);
+            difuse_set = true;
+        }
+
+        else if(header == "Ks") {
+            float r, g, b;
+            line_stream >> r >> g >> b;
+            specular = glm::vec3(r, g, b);
+            difuse_set = true;
+        }
+
+        else if(header == "Ns") {
+            line_stream >> specular_exp;
+            specular_exp_set = true;
+        }
+
+        else if(header == "d") {
+            line_stream >> transparency;
+            transparency = 1.0 - transparency;
+            transparency_set = true; 
+        }
+
+        else if(header == "Tr") {
+            line_stream >> transparency;
+            transparency_set = true;
+        }
+        else
+            std::cerr << "Material file contains unsupported header " << header << std::endl;
+    }
+
+    // Save previous material
+    if(created_material) {
+        if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set)
+            materials.insert({material_name, Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
+        else
+            std::cerr << "There was an error loading material " << material_name << ". Some components were missing." << std::endl;
+    }
+
+    return materials;
+}
+
 ObjLoader::~ObjLoader() {
 
 }

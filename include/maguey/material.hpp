@@ -73,14 +73,16 @@ public:
 
     /**
      * Remove the copy constructor to avoid issues with undefined data sources.
+     * (temporarily re-enabled)
      */
-    Material(const Material&) = delete;
+    //Material(const Material&) = delete;
 
     /**
      * Disable the copy assignment operator to avoid issues with undefined data
      * sources.
+     * (temporarily re-enabled)
      */
-    Material& operator=(Material const&) = delete;
+    //Material& operator=(Material const&) = delete;
 
     /**
      * Returns the name of the material, as provided by the constructor.
@@ -122,7 +124,7 @@ public:
      */
     ShaderUniform transparency_uniform();
 
-    ~Material();
+    virtual ~Material();
 private:
     std::function<const void*()> ambient_color_data_source();
     std::function<const void*()> difuse_color_data_source();
