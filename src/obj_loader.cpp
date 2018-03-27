@@ -169,15 +169,18 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
 
     while(std::getline(ss, line)) {
         line_num++;
+        std::stringstream line_stream(line);
+        std::string header;
+
+        line_stream >> header;
 
         // Group definition: Either "g group_name" or "g obj_name group_name".
         // More than one argument is ignored
-        if(line[0] == 'g') {
-            std::stringstream lineStream(line);
+        if(header == "g") {
 
             std::string header, gname;
 
-            if(!(lineStream >> header >> gname)) {
+            if(!(line_stream >> gname)) {
                 std::cerr << "Invalid group on line " << line_num << ": \"" << line << "\"" << std::endl;
                 error = true;
                 return std::unordered_map<std::string, TriangleMesh*>();
@@ -186,13 +189,10 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
             group = gname;
         }
 
-        if(line[0] == 'v' && line[1] == ' ') {
-            std::stringstream lineStream(line);
-
-            std::string header;
+        if(header == "v") {
             double x, y, z;
 
-            if(!(lineStream >> header >> x >> y >> z)) {
+            if(!(line_stream >> x >> y >> z)) {
                 std::cerr << "Invalid vertex on line " << line_num << ": \"" << line << "\"" << std::endl;
                 error = true;
                 return std::unordered_map<std::string, TriangleMesh*>();
@@ -201,13 +201,10 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
             vertexRaw.push_back(glm::vec4(x, y, z, 1.0f));
         }
 
-        else if(line[0] == 'v' && line[1] == 'n') {
-            std::stringstream lineStream(line);
-
-            std::string header;
+        else if(header == "vn") {
             double x, y, z;
 
-            if(!(lineStream >> header >> x >> y >> z)) {
+            if(!(line_stream >> x >> y >> z)) {
                 std::cerr << "Invalid vertex normal line " << line_num << ": \"" << line << "\"" << std::endl;
                 error = true;
                 return std::unordered_map<std::string, TriangleMesh*>();
@@ -216,7 +213,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
             normalRaw.push_back(glm::vec4(x, y, z, 0.0f));
         }
 
-        else if(line[0] == 'f') {
+        else if(header == "f") {
             if(index_map.count(group) == 0)
                 index_map.insert({group, internal::index_data()});
             if(!process_face(line, index_map[group], line_num)) {
