@@ -233,7 +233,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
     return meshes;
 }
 
-std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std::string& file, bool& error) {
+std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std::string& file, bool& error) const {
     error = false;
 
     std::ifstream fileStream(file);
@@ -248,7 +248,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std:
     return loadMaterialString(fileContents, error);
 }
 
-std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const std::string& contents, bool& error) {
+std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const std::string& contents, bool& error) const {
     std::unordered_map<std::string, Material> materials;
 
     error = false;
