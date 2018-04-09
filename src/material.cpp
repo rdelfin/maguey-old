@@ -86,6 +86,17 @@ ShaderUniform Material::transparency_uniform() {
 }
 
 
+bool Material::operator==(const Material& m) {
+    return this->_name             == m._name        &&
+           this->ambient           == m.ambient      &&
+           this->difuse            == m.difuse       &&
+           this->specular          == m.specular     &&
+           this->specular_exp      == m.specular_exp &&
+           this->transparancy      == m.transparancy &&
+           this->illumination_mode == m.illumination_mode;
+}
+
+
 Material::~Material() { }
 
 

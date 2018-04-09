@@ -124,6 +124,8 @@ public:
      */
     ShaderUniform transparency_uniform();
 
+    bool operator==(const Material& m);
+
     virtual ~Material();
 private:
     std::function<const void*()> ambient_color_data_source();
