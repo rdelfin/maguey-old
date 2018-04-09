@@ -86,7 +86,7 @@ ShaderUniform Material::transparency_uniform() {
 }
 
 
-bool Material::operator==(const Material& m) {
+bool Material::operator==(const Material& m) const {
     return this->_name             == m._name        &&
            this->ambient           == m.ambient      &&
            this->difuse            == m.difuse       &&

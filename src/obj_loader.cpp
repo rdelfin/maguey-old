@@ -150,7 +150,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
                                                                      const Shader& fragmentShader) const {
     // Result map returned at the end
     std::unordered_map<std::string, TriangleMesh*> meshes;
-    std::unordered_map<std::string, Material> material;
+    std::unordered_map<std::string, Material*> material;
     // Set error flag to false
     error = false;
 
@@ -236,7 +236,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
             }
 
             bool new_error;
-            std::unordered_map<std::string, Material> new_mats = loadMaterialFile(file_name, new_error);
+            std::unordered_map<std::string, Material*> new_mats = loadMaterialFile(file_name, new_error);
 
             if(new_error) {
                 std::cerr << "There was an error reading the material file. Exiting..." << std::endl;
@@ -259,7 +259,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
     return meshes;
 }
 
-std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std::string& file, bool& error) const {
+std::unordered_map<std::string, Material*> ObjLoader::loadMaterialFile(const std::string& file, bool& error) const {
     error = false;
 
     std::ifstream fileStream(file);
@@ -274,8 +274,8 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialFile(const std:
     return loadMaterialString(fileContents, error);
 }
 
-std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const std::string& contents, bool& error) const {
-    std::unordered_map<std::string, Material> materials;
+std::unordered_map<std::string, Material*> ObjLoader::loadMaterialString(const std::string& contents, bool& error) const {
+    std::unordered_map<std::string, Material*> materials;
 
     error = false;
 
@@ -308,7 +308,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             // Save previous material
             if(created_material) {
                 if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set)
-                    materials.insert({material_name, Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
+                    materials.insert({material_name, new Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
                 else
                     std::cerr << "There was an error loading material " << material_name << ". Some components were missing." << std::endl;
             }
@@ -326,7 +326,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             if(!(line_stream >> r >> g >> b)) {
                 std::cerr << "There was an error reading the Ka property (ambient color) for material \"" << material_name << "\""  << std::endl;
                 error = true;
-                return std::unordered_map<std::string, Material>();
+                return std::unordered_map<std::string, Material*>();
             }
 
             ambient = glm::vec3(r, g, b);
@@ -338,7 +338,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             if(!(line_stream >> r >> g >> b)) {
                 std::cerr << "There was an error reading the Kd property (Difuse color) for material \"" << material_name << "\""  << std::endl;
                 error = true;
-                return std::unordered_map<std::string, Material>();
+                return std::unordered_map<std::string, Material*>();
             }
 
             difuse = glm::vec3(r, g, b);
@@ -350,7 +350,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             if(!(line_stream >> r >> g >> b)) {
                 std::cerr << "There was an error reading the Ks property (specular color) for material \"" << material_name << "\""  << std::endl;
                 error = true;
-                return std::unordered_map<std::string, Material>();
+                return std::unordered_map<std::string, Material*>();
             }
 
             specular = glm::vec3(r, g, b);
@@ -361,7 +361,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             if(!(line_stream >> specular_exp)) {
                 std::cerr << "There was an error reading the Ns property (specular exponent) for material \"" << material_name << "\""  << std::endl;
                 error = true;
-                return std::unordered_map<std::string, Material>();
+                return std::unordered_map<std::string, Material*>();
             }
 
             specular_exp_set = true;
@@ -371,7 +371,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             if(!(line_stream >> transparency)) {
                 std::cerr << "There was an error reading the d property (opacity) for material \"" << material_name << "\""  << std::endl;
                 error = true;
-                return std::unordered_map<std::string, Material>();
+                return std::unordered_map<std::string, Material*>();
             }
 
             transparency = 1.0 - transparency;
@@ -382,7 +382,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
             if(!(line_stream >> transparency)) {
                 std::cerr << "There was an error reading the Tr property (transparency) for material \"" << material_name << "\""  << std::endl;
                 error = true;
-                return std::unordered_map<std::string, Material>();
+                return std::unordered_map<std::string, Material*>();
             }
 
             transparency_set = true;
@@ -392,7 +392,7 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
     // Save previous material
     if(created_material) {
         if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set)
-            materials.insert({material_name, Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
+            materials.insert({material_name, new Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
         else
             std::cerr << "There was an error loading material " << material_name << ". Some components were missing." << std::endl;
     }

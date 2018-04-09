@@ -63,8 +63,8 @@ public:
                                                                        const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
                                                                        const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const;
 
-    virtual std::unordered_map<std::string, Material> loadMaterialFile(const std::string& file, bool& error) const;
-    virtual std::unordered_map<std::string, Material> loadMaterialString(const std::string& contents, bool& error) const;
+    virtual std::unordered_map<std::string, Material*> loadMaterialFile(const std::string& file, bool& error) const;
+    virtual std::unordered_map<std::string, Material*> loadMaterialString(const std::string& contents, bool& error) const;
 
     ~ObjLoader();
 

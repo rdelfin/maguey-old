@@ -124,7 +124,7 @@ public:
      */
     ShaderUniform transparency_uniform();
 
-    bool operator==(const Material& m);
+    bool operator==(const Material& m) const;
 
     virtual ~Material();
 private:
