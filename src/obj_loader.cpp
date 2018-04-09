@@ -173,6 +173,9 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
         std::stringstream line_stream(line);
         std::string header;
 
+        if(line.length() == 0)
+            continue;
+
         line_stream >> header;
 
         // Group definition: Either "g group_name" or "g obj_name group_name".
@@ -291,6 +294,10 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
     while(std::getline(ss, line)) {
         std::stringstream line_stream(line);
         std::string header;
+
+        if(line.length() == 0)
+            continue;
+
         line_stream >> header;
 
         // Check for new material line
@@ -380,8 +387,6 @@ std::unordered_map<std::string, Material> ObjLoader::loadMaterialString(const st
 
             transparency_set = true;
         }
-        else
-            std::cerr << "Material file contains unsupported header " << header << std::endl;
     }
 
     // Save previous material
