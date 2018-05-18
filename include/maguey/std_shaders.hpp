@@ -28,8 +28,8 @@ out vec4 vs_light_direction;
 void main() {
     gl_Position = vertex_position;
     vs_normal = normal;
-    vs_camera_direction = normalize(vec4(camera_position - vec3(gl_Position), 0.0));
-    vs_light_direction = normalize(light_position - gl_Position);
+    vs_camera_direction = normalize(vec4(camera_position - vec3(vertex_position), 0.0));
+    vs_light_direction = normalize(light_position - vertex_position);
 }
 )zzz";
 
