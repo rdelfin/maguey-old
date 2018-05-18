@@ -60,7 +60,7 @@ public:
                                                                        Camera& camera,
                                                                        const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
                                                                        const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
-                                                                       const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const;
+                                                                       const Shader& fragmentShader = Shader(MESH_SHADER_FRAG, false)) const;
     ~ObjLoader();
 
 private:
