@@ -16,7 +16,15 @@ sudo apt-get install maguey
 
 ## Build
 
-If you'd rather build this from scratch, clone the repo into a folder called `maguey` and run:
+If you'd rather build this from scratch, here are the instructions.
+
+First up, install all the necessary dependencies:
+
+```bash
+sudo apt-get install libglfw3-dev libsoil-dev libglew-dev libglm-dev libgtest-dev pkgconfig
+```
+
+Then clone the repo into a folder called `maguey` and run:
 
 ```bash
 cd maguey
