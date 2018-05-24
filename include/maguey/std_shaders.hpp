@@ -20,16 +20,16 @@ uniform vec4 light_position = vec4(0.0, 100.0, 20.0, 1.0);
 in vec4 vertex_position;
 in vec4 normal;
 
-
+out vec4 temp_vert_position;
 out vec4 vs_normal;
 out vec4 vs_camera_direction;
 out vec4 vs_light_direction;
 
 void main() {
-    gl_Position = vertex_position;
+    temp_vert_position = vertex_position;
     vs_normal = normal;
-    vs_camera_direction = normalize(vec4(camera_position - vec3(gl_Position), 0.0));
-    vs_light_direction = normalize(light_position - gl_Position);
+    vs_camera_direction = normalize(vec4(camera_position - vec3(vertex_position), 0.0));
+    vs_light_direction = normalize(light_position - vertex_position);
 }
 )zzz";
 
@@ -47,6 +47,7 @@ uniform mat4 view;
 in vec4 vs_camera_direction[];
 in vec4 vs_normal[];
 in vec4 vs_light_direction[];
+in vec4 temp_vert_position[];
 
 out vec4 camera_direction;
 out vec4 vertex_normal;
@@ -60,8 +61,8 @@ void main() {
         camera_direction = vs_camera_direction[n];
         light_direction = vs_light_direction[n];
         vertex_normal = model * vs_normal[n];
-        gl_Position = projection * view * model * gl_in[n].gl_Position;
-        world_position = model * gl_in[n].gl_Position;
+        gl_Position = projection * view * model * temp_vert_position[n];
+        world_position = model * temp_vert_position[n];
         EmitVertex();
     }
 
@@ -105,6 +106,7 @@ R"zzz(
 in vec4 vertex_position;
 
 out vec3 vertex_tex_coords;
+out vec4 temp_vert_position;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -112,7 +114,7 @@ uniform mat4 view;
 void main()
 {
     vertex_tex_coords = vec3(vertex_position);
-    gl_Position = projection * view * vertex_position;
+    temp_vert_position = projection * view * vertex_position;
 }
 )zzz";
 
@@ -124,6 +126,7 @@ layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
 in vec3 vertex_tex_coords[];
+in vec4 temp_vert_position[];
 
 out vec3 TexCoords;
 
@@ -131,7 +134,7 @@ void main() {
     int n = 0;
 
     for(n = 0; n < gl_in.length(); n++) {
-        gl_Position = gl_in[n].gl_Position;
+        gl_Position = temp_vert_position[n];
         TexCoords = vertex_tex_coords[n];
         EmitVertex();
     }

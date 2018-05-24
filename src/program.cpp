@@ -40,22 +40,27 @@ ShaderUniform::ShaderUniform(std::string name, BinderType binderType, std::funct
             binder = [](int loc, const void* data) {
                 glUniform1fv(loc, 1, (const GLfloat*) data);
             };
+            break;
         case BINDER_VECTOR3_F:
             binder = [](int loc, const void* data) {
                 glUniform3fv(loc, 1, (const GLfloat*) data);
             };
+            break;
         case BINDER_VECTOR4_F:
             binder = [](int loc, const void* data) {
                 glUniform4fv(loc, 1, (const GLfloat*) data);
             };
+            break;
         case BINDER_MATRIX3_F:
             binder = [](int loc, const void* data) {
                 glUniformMatrix3fv(loc, 1, GL_FALSE, (const GLfloat*) data);
             };
+            break;
         case BINDER_MATRIX4_F:
             binder = [](int loc, const void* data) {
                 glUniformMatrix4fv(loc, 1, GL_FALSE, (const GLfloat*) data);
             };
+            break;
     }
 }
 

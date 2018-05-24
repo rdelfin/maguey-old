@@ -61,7 +61,7 @@ public:
                                                                        Camera& camera,
                                                                        const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
                                                                        const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
-                                                                       const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const;
+                                                                       const Shader& fragmentShader = Shader(MESH_SHADER_FRAG, false)) const;
 
     virtual std::unordered_map<std::string, Material*> loadMaterialFile(const std::string& file, bool& error) const;
     virtual std::unordered_map<std::string, Material*> loadMaterialString(const std::string& contents, bool& error) const;
