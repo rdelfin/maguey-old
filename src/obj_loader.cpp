@@ -291,7 +291,8 @@ std::unordered_map<std::string, Material*> ObjLoader::loadMaterialString(const s
     glm::vec3 specular;
     float specular_exp;
     float transparency;
-    bool ambient_set = false, difuse_set = false, specular_set = false, specular_exp_set = false, transparency_set = false;
+    int illumination_mode;
+    bool ambient_set = false, difuse_set = false, specular_set = false, specular_exp_set = false, transparency_set = false, illumination_mode_set = true;
 
     while(std::getline(ss, line)) {
         std::stringstream line_stream(line);
@@ -307,10 +308,12 @@ std::unordered_map<std::string, Material*> ObjLoader::loadMaterialString(const s
             std::stringstream line_stream(line);
             std::string header, name;
 
+            line_stream >> header >> name;
+
             // Save previous material
             if(created_material) {
-                if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set)
-                    materials.insert({material_name, new Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
+                if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set && illumination_mode_set)
+                    materials.insert({material_name, new Material(material_name, ambient, difuse, specular, specular_exp, transparency, (IlluminationMode)illumination_mode)});
                 else
                     std::cerr << "There was an error loading material " << material_name << ". Some components were missing." << std::endl;
             }
@@ -356,7 +359,7 @@ std::unordered_map<std::string, Material*> ObjLoader::loadMaterialString(const s
             }
 
             specular = glm::vec3(r, g, b);
-            difuse_set = true;
+            specular_set = true;
         }
 
         else if(header == "Ns") {
@@ -389,12 +392,22 @@ std::unordered_map<std::string, Material*> ObjLoader::loadMaterialString(const s
 
             transparency_set = true;
         }
+
+        else if(header == "illum") {
+            if(!(line_stream >> illumination_mode)) {
+                std::cerr << "There was an error reading the illum property (illumination mode) for material \"" << material_name << "\""  << std::endl;
+                error = true;
+                return std::unordered_map<std::string, Material*>();
+            }
+
+            illumination_mode_set = true;
+        }
     }
 
     // Save previous material
     if(created_material) {
-        if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set)
-            materials.insert({material_name, new Material(material_name, ambient, difuse, specular, specular_exp, transparency)});
+        if(ambient_set && difuse_set && specular_set && specular_exp_set && transparency_set && illumination_mode_set)
+            materials.insert({material_name, new Material(material_name, ambient, difuse, specular, specular_exp, transparency, (IlluminationMode)illumination_mode)});
         else
             std::cerr << "There was an error loading material " << material_name << ". Some components were missing." << std::endl;
     }

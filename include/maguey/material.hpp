@@ -67,9 +67,12 @@ public:
      * @param transparency Transparency of the material, with 0.0 being
      *                     completely opaque, and 1.0 being completely
      *                     transparent.
+     * @param illumination_mode The type of illumination to be used, according
+     *                          to the struct defined above the one named
+     *                          (`IlluminationMode`).
      */
     Material(std::string name, glm::vec3 ambient, glm::vec3 difuse,
-             glm::vec3 specular, float specular_exp, float transparency);
+             glm::vec3 specular, float specular_exp, float transparency, IlluminationMode illumination_mode);
 
     /**
      * Remove the copy constructor to avoid issues with undefined data sources.

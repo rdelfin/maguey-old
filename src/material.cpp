@@ -3,6 +3,8 @@
 //
 
 #include <maguey/material.hpp>
+#include <iostream>
+#include <glm/gtx/string_cast.hpp>
 
 namespace maguey {
 
@@ -15,9 +17,10 @@ extern const std::string TRANSPARENCY_UNIFORM_NAME = "transparency";
 
 Material::Material(std::string name, glm::vec3 ambient, glm::vec3 difuse,
                    glm::vec3 specular, float specular_exp,
-                   float transparency)
+                   float transparency, IlluminationMode illumination_mode)
     : _name(name), ambient(ambient), difuse(difuse), specular(specular),
-      specular_exp(specular_exp), transparancy(transparency) {
+      specular_exp(specular_exp), transparancy(transparency),
+      illumination_mode(illumination_mode) {
     
 }
 
