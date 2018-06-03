@@ -16,7 +16,7 @@ Ka 1.000 0.000 0.500
 Kd 0.500 1.000 0.000
 Ks 0.000 0.500 1.000
 Ns 5.0
-d  0.9
+d  0.75
 illum 2
 )";
 
@@ -27,7 +27,7 @@ Ka 1.000 0.000 0.500
 Kd 0.500 1.000 0.000
 Ks 0.000 0.500 1.000
 Ns 5.0
-Tr  0.1
+Tr  0.25
 illum 2
 )";
 
@@ -38,7 +38,7 @@ Ka 1.000 0.000 0.500
 Kd 0.500 1.000 0.000
 Ks 0.000 0.500 1.000
 Ns 5.0
-Tr  0.1
+Tr  0.25
 illum 2
 
 newmtl mat_2
@@ -46,7 +46,7 @@ Ka 0.392 0.584 0.929
 Kd 1.000 0.388 0.278
 Ks 0.373 0.620 0.627
 Ns 2.0
-Tr  0.6
+Tr  0.625
 illum 1
 )";
 
@@ -69,15 +69,16 @@ void comparison_test(const std::string& file, std::unordered_map<std::string, ma
 
     ASSERT_EQ(material_keys, true_material_keys);
 
-    for(std::pair<std::string, maguey::Material*> p : material_map)
+    for(std::pair<std::string, maguey::Material*> p : material_map) {
         ASSERT_EQ(*p.second, *true_material_map[p.first]);
+    }
 }
 
 TEST(materialOneTest, MaterialFileTest) {
     std::unordered_map<std::string, maguey::Material*> mats = {
             {
                 "mat_1",
-                new maguey::Material("mat_1", glm::vec3(1.000, 0.000, 0.500), glm::vec3(0.500, 1.000, 0.000), glm::vec3(0.000, 0.500, 1.000), 5.0, 0.1)
+                new maguey::Material("mat_1", glm::vec3(1.000, 0.000, 0.500), glm::vec3(0.500, 1.000, 0.000), glm::vec3(0.000, 0.500, 1.000), 5.0, 1.0-0.75, maguey::ILLUMINATION_HIGHLIGHT_ON)
             }
         };
     comparison_test(mat_1, mats);
@@ -87,7 +88,7 @@ TEST(materialTwoTest, MaterialFileTest) {
     std::unordered_map<std::string, maguey::Material*> mats = {
             {
                 "mat_2",
-                new maguey::Material("mat_2", glm::vec3(1.000, 0.000, 0.500), glm::vec3(0.500, 1.000, 0.000), glm::vec3(0.000, 0.500, 1.000), 5.0, 0.1)
+                new maguey::Material("mat_2", glm::vec3(1.000, 0.000, 0.500), glm::vec3(0.500, 1.000, 0.000), glm::vec3(0.000, 0.500, 1.000), 5.0, 0.25, maguey::ILLUMINATION_HIGHLIGHT_ON)
             }
         };
     comparison_test(mat_2, mats);
@@ -97,11 +98,11 @@ TEST(materialMultipleTest, MaterialFileTest) {
     std::unordered_map<std::string, maguey::Material*> mats = {
             {
                 "mat_1",
-                new maguey::Material("mat_1", glm::vec3(1.000, 0.000, 0.500), glm::vec3(0.500, 1.000, 0.000), glm::vec3(0.000, 0.500, 1.000), 5.0, 0.1)
+                new maguey::Material("mat_1", glm::vec3(1.000, 0.000, 0.500), glm::vec3(0.500, 1.000, 0.000), glm::vec3(0.000, 0.500, 1.000), 5.0, 0.25, maguey::ILLUMINATION_HIGHLIGHT_ON)
             },
             {
                 "mat_2",
-                new maguey::Material("mat_2", glm::vec3(0.392, 0.584, 0.929), glm::vec3(1.000, 0.388, 0.278), glm::vec3(0.373, 0.620, 0.627), 2.0, 0.6)
+                new maguey::Material("mat_2", glm::vec3(0.392, 0.584, 0.929), glm::vec3(1.000, 0.388, 0.278), glm::vec3(0.373, 0.620, 0.627), 2.0, 0.625, maguey::ILLUMINATION_COLOR_ON_AMBIENT_ON)
             }
         };
     comparison_test(multiple_mats, mats);
