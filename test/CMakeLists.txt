@@ -26,3 +26,4 @@ target_link_libraries(materials_test gtest gtest_main ${stdgl_libraries})
 
 add_test(NAME main_test  COMMAND main_test)
 add_test(NAME loader_test COMMAND loader_test)
+add_test(NAME materials_test COMMAND materials_test)
