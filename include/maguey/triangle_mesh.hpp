@@ -28,13 +28,29 @@ namespace maguey {
 class TriangleMesh : public Renderable {
 public:
     /**
-     * Default constructor for the TriangleMesh. Must be followed up by a call
-     * to any load() method overload.
+     * Default constructor for the TriangleMesh. Should only be used if an
+     * object needs to be initialized without parameters and should be replaced
+     * by an object using the main constructor.
      */
     TriangleMesh();
 
     /**
-     * Loads a new triangle mesh using the face/vertex/normal list, camera, and
+     * Main constructor for the TriangleMesh class. Creates triangle mesh only
+     * with the basic data structures. Must be followed by a call to any load()
+     * method overload.
+     * 
+     * @param vertices       A vector containing a list of vertices.
+     * @param normals        A vector containing a list of normals, each one
+     *                       corresponding to each vertex in vertices.
+     * @param faces          A vector of faces, each one containing the indices
+     *                       of the vertices making up said face.
+     */
+    TriangleMesh(const std::vector<glm::vec4>& vertices,
+                 const std::vector<glm::vec4>& normals,
+                 const std::vector<glm::uvec3>& faces);
+
+    /**
+     * Loads a new triangle mesh into OpenGL using a camera object and three
      * shaders. The shaders will be provided with the uniforms: `projection`
      * (projection matrix, mat4), `model` (the model matrix, mat4), view (the
      * view matrix, mat4) and `camera_position` (the camera position, vec3).
@@ -42,21 +58,12 @@ public:
      * `vertex_position`, the normal VBO's under `normal`, and the vertex color
      * output must be provided under the name `vertex_color`.
      *
-     *
-     * @param vertices       A vector containing a list of vertices.
-     * @param normals        A vector containing a list of normals, each one
-     *                       corresponding to each vertex in vertices.
-     * @param faces          A vector of faces, each one containing the indices
-     *                       of the vertices making up said face.
      * @param camera         The camera object associated with this rendering.
      * @param vertexShader   The vertex shader to be used for this mesh.
      * @param geometryShader The geometry shader to be used for this mesh.
      * @param fragmentShader The fragment shader to be used for this mesh.
      */
-    void load(const std::vector<glm::vec4>& vertices,
-              const std::vector<glm::vec4>& normals,
-              const std::vector<glm::uvec3>& faces,
-              Camera& camera,
+    void load(Camera& camera,
               const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
               const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
               const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false));
@@ -132,8 +139,7 @@ public:
     const std::vector<glm::uvec3>& getFaces();
 
 protected:
-    void loadImpl(const std::vector<glm::vec4>& vertices, const std::vector<glm::vec4>& normals, const std::vector<glm::uvec3>& faces,
-                  Camera& camera,
+    void loadImpl(Camera& camera,
                   const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader);
 
     std::function<const void*()> modelMatrixDataSource();

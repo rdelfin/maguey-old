@@ -28,20 +28,19 @@ const std::string TriangleMesh::NORMAL_VBO_NAME = "normal";
 const std::string TriangleMesh::FRAGMENT_COLOR_NAME = "vertex_color";
 
 
-TriangleMesh::TriangleMesh() {
+TriangleMesh::TriangleMesh() { }
 
+TriangleMesh::TriangleMesh(const std::vector<glm::vec4>& vertices,
+                           const std::vector<glm::vec4>& normals,
+                           const std::vector<glm::uvec3>& faces)
+        : vertices(vertices), normals(normals), faces(faces) { }
+
+void TriangleMesh::load(Camera& camera, const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
+    loadImpl(camera, vertexShader, geometryShader, fragmentShader);
 }
 
-void TriangleMesh::load(const std::vector<glm::vec4>& vertices, const std::vector<glm::vec4>& normals, const std::vector<glm::uvec3>& faces,
-                        Camera& camera,
-                        const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
-    loadImpl(vertices, normals, faces, camera, vertexShader, geometryShader, fragmentShader);
-}
-
-void TriangleMesh::loadImpl(const std::vector<glm::vec4> &vertices, const std::vector<glm::vec4> &normals,
-                            const std::vector<glm::uvec3> &faces, Camera& camera, 
-                            const Shader &vertexShader,
-                            const Shader &geometryShader, const Shader &fragmentShader) {
+void TriangleMesh::loadImpl(Camera& camera, 
+                            const Shader &vertexShader, const Shader &geometryShader, const Shader &fragmentShader) {
     // Set default model position
     this->forward = glm::vec3(1.0f, 0.0f, 0.0f);
     this->up = glm::vec3(0.0f, 1.0f, 0.0f);
