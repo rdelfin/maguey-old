@@ -41,8 +41,6 @@ public:
      *                       working directory.
      * @param error          Is set to true if there was an error. Else set to
      *                       false.
-     * @param camera         Camera object used to create the TriangleMesh
-     *                       objects.
      * @param vertexShader   Default vertex shader if none is specified by the
      *                       model.
      * @param geometryShader Default geometry shader if none is specified by
@@ -51,7 +49,6 @@ public:
      *                       the model.
      */
     virtual std::unordered_map<std::string, TriangleMesh*> loadFile(const std::string& path, bool& error,
-                                                                    Camera& camera,
                                                                     const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
                                                                     const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
                                                                     const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const {
@@ -66,7 +63,7 @@ public:
 
         std::string fileContents = std::string(std::istreambuf_iterator<char>(fileStream),
                                                std::istreambuf_iterator<char>());
-        return loadString(fileContents, error, camera, vertexShader, geometryShader, fragmentShader);
+        return loadString(fileContents, error, vertexShader, geometryShader, fragmentShader);
     }
     
     /**
@@ -78,8 +75,6 @@ public:
      * @param contents       The contents of the file format being loaded in.
      * @param error          Is set to true if there was an error. Else set to
      *                       false.
-     * @param camera         Camera object used to create the TriangleMesh
-     *                       objects.
      * @param vertexShader   Default vertex shader if none is specified by the
      *                       model.
      * @param geometryShader Default geometry shader if none is specified by
@@ -88,7 +83,6 @@ public:
      *                       the model.
      */
     virtual std::unordered_map<std::string, TriangleMesh*>  loadString(const std::string& contents, bool& error,
-                                                                       Camera& camera,
                                                                        const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
                                                                        const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
                                                                        const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false)) const = 0;

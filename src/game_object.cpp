@@ -35,10 +35,12 @@ void GameObject::loadFile(const std::string& filePath, const MeshLoader& meshLoa
                           Camera& camera,
                           const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
     bool error;
-    std::unordered_map<std::string, TriangleMesh*> new_meshes = meshLoader.loadFile(filePath, error, camera, vertexShader, geometryShader, fragmentShader);
+    std::unordered_map<std::string, TriangleMesh*> new_meshes = meshLoader.loadFile(filePath, error, vertexShader, geometryShader, fragmentShader);
 
-    for(auto it = new_meshes.begin(); it != new_meshes.end(); ++it)
+    for(auto it = new_meshes.begin(); it != new_meshes.end(); ++it) {
         this->addMesh(it->second);
+        it->second->load(camera);
+    }
 }
 
 void GameObject::setPosition(glm::vec3 p) { this->pos = p; }

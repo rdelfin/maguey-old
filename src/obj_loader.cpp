@@ -111,7 +111,6 @@ bool ObjLoader::process_face(const std::string& line, maguey::internal::index_da
 bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, internal::index_data>& index_map,
                                       const std::vector<glm::vec4>& vertexRaw, const std::vector<glm::vec4>& normalRaw,
                                       std::unordered_map<std::string, TriangleMesh*>& meshes,
-                                      Camera& camera,
                                       const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) const {
 
     for(const std::pair<std::string, internal::index_data>& data_pair : index_map) {
@@ -139,14 +138,12 @@ bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, inte
         }
 
         meshes.insert({data_pair.first, new TriangleMesh(vertices, normals, faces, vertexShader, geometryShader, fragmentShader)});
-        meshes[data_pair.first]->load(camera);
     }
 
     return true;
 }
 
 std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::string& contents, bool& error,
-                                                                     Camera& camera,
                                                                      const Shader& vertexShader,
                                                                      const Shader& geometryShader,
                                                                      const Shader& fragmentShader) const {
@@ -252,7 +249,7 @@ std::unordered_map<std::string, TriangleMesh*> ObjLoader::loadString(const std::
     }
 
 
-    if(!load_data_into_meshes(index_map, vertexRaw, normalRaw, meshes, camera, vertexShader, geometryShader, fragmentShader)) {
+    if(!load_data_into_meshes(index_map, vertexRaw, normalRaw, meshes, vertexShader, geometryShader, fragmentShader)) {
         std::cerr << "There was an error loading indices into meshes. Consult errors above." << std::endl;
         error = true;
         return std::unordered_map<std::string, TriangleMesh*>();

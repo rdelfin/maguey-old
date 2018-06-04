@@ -48,8 +48,6 @@ public:
      * @param contents The contents of the file format being loaded in.
      * @param error          Is set to true if there was an error (notably if
      *                       an invalid line is found). Else is set to false.
-     * @param camera         Camera object used to create the TriangleMesh
-     *                       objects.
      * @param vertexShader   Default vertex shader if none is specified by the
      *                       model.
      * @param geometryShader Default geometry shader if none is specified by
@@ -58,7 +56,6 @@ public:
      *                       the model.
      */
     virtual std::unordered_map<std::string, TriangleMesh*>  loadString(const std::string& contents, bool& error,
-                                                                       Camera& camera,
                                                                        const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
                                                                        const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
                                                                        const Shader& fragmentShader = Shader(MESH_SHADER_FRAG, false)) const;
@@ -76,7 +73,6 @@ private:
     bool load_data_into_meshes(const std::unordered_map<std::string, internal::index_data>& index_map,
                                const std::vector<glm::vec4>& vertexRaw, const std::vector<glm::vec4>& normalRaw,
                                std::unordered_map<std::string, TriangleMesh*>& meshes,
-                               Camera& camera,
                                const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) const;
 };
 

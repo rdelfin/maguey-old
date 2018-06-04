@@ -105,7 +105,7 @@ void comparison_test(const std::string& file,
     maguey::ObjLoader loader;
     bool error;
 
-    std::unordered_map<std::string, maguey::TriangleMesh*> mesh_map = loader.loadString(file, error, camera);
+    std::unordered_map<std::string, maguey::TriangleMesh*> mesh_map = loader.loadString(file, error);
     ASSERT_TRUE(error);
 
     std::vector<std::string> mesh_keys(mesh_map.size()), true_vert_keys(true_verts.size()),
