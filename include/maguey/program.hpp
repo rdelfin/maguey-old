@@ -161,6 +161,12 @@ public:
     GLint getProgramId() { return shaderProgram; }
 
     /**
+     * Compiles the shader on the GPU. Run as soon after initialization as
+     * possible. Lifted mostly from CS 354 project 3
+     */
+    void compile();
+
+    /**
      * Adds the indeces for the uniforms to a list of locations by using
      * `glGetUniformLocation()`.
      */
@@ -185,11 +191,6 @@ public:
 
     ~Program();
 private:
-    /**
-     * Compiles the shader on the GPU. Lifted mostly from CS 354 project 3
-     */
-    void compile();
-
     Shader vertexShader, geometryShader, fragmentShader;
     std::vector<ShaderUniform> uniforms;
     std::vector<GLint> uniformIds;

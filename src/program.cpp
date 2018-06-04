@@ -98,11 +98,7 @@ Program::Program(std::vector<ShaderUniform> uniforms,
                  Shader vertexShader, Shader geometryShader,
                  Shader fragmentShader)
     : uniforms(uniforms), vertexShader(vertexShader),
-      geometryShader(geometryShader), fragmentShader(fragmentShader) {
-
-    // Afterwards, compile shader and load programId accordingly
-    compile();
-}
+      geometryShader(geometryShader), fragmentShader(fragmentShader) { }
 
 void Program::addUniformLocations() {
     uniformIds.resize(uniforms.size());

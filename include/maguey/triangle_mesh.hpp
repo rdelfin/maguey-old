@@ -37,36 +37,35 @@ public:
     /**
      * Main constructor for the TriangleMesh class. Creates triangle mesh only
      * with the basic data structures. Must be followed by a call to any load()
-     * method overload.
+     * method overload.  The shaders will be provided with the uniforms:
+     * `projection` (projection matrix, mat4), `model` (the model matrix,
+     * mat4), view (the  view matrix, mat4) and `camera_position` (the camera
+     * position, vec3). They will also be provided the vertex VBO's under the
+     * name `vertex_position`, the normal VBO's under `normal`, and the vertex
+     * color output must be provided under the name `vertex_color`.
      * 
      * @param vertices       A vector containing a list of vertices.
      * @param normals        A vector containing a list of normals, each one
      *                       corresponding to each vertex in vertices.
      * @param faces          A vector of faces, each one containing the indices
      *                       of the vertices making up said face.
-     */
-    TriangleMesh(const std::vector<glm::vec4>& vertices,
-                 const std::vector<glm::vec4>& normals,
-                 const std::vector<glm::uvec3>& faces);
-
-    /**
-     * Loads a new triangle mesh into OpenGL using a camera object and three
-     * shaders. The shaders will be provided with the uniforms: `projection`
-     * (projection matrix, mat4), `model` (the model matrix, mat4), view (the
-     * view matrix, mat4) and `camera_position` (the camera position, vec3).
-     * They will also be provided the vertex VBO's under the name
-     * `vertex_position`, the normal VBO's under `normal`, and the vertex color
-     * output must be provided under the name `vertex_color`.
-     *
-     * @param camera         The camera object associated with this rendering.
      * @param vertexShader   The vertex shader to be used for this mesh.
      * @param geometryShader The geometry shader to be used for this mesh.
      * @param fragmentShader The fragment shader to be used for this mesh.
      */
-    void load(Camera& camera,
-              const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
-              const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
-              const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false));
+    TriangleMesh(const std::vector<glm::vec4>& vertices,
+                 const std::vector<glm::vec4>& normals,
+                 const std::vector<glm::uvec3>& faces,
+                 const Shader& vertexShader = Shader(MESH_SHADER_VERT, false),
+                 const Shader& geometryShader = Shader(MESH_SHADER_GEOM, false),
+                 const Shader& fragmentShader = Shader(MESH_SHADER_VERT, false));
+
+    /**
+     * Loads a new triangle mesh into OpenGL using a camera object.
+     *
+     * @param camera The camera object associated with this rendering.
+     */
+    void load(Camera& camera);
 
     /**
      * Sets the position of the mesh in world coordinates.
@@ -139,8 +138,7 @@ public:
     const std::vector<glm::uvec3>& getFaces();
 
 protected:
-    void loadImpl(Camera& camera,
-                  const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader);
+    void loadImpl(Camera& camera);
 
     std::function<const void*()> modelMatrixDataSource();
 
@@ -149,6 +147,7 @@ protected:
     std::vector<unsigned> vbo;
     unsigned vao;
 
+    Shader vertexShader, geometryShader, fragmentShader;
     Program program;
 
     glm::vec3 position;
@@ -160,6 +159,8 @@ protected:
     static const std::string VERTEX_VBO_NAME;
     static const std::string FRAGMENT_COLOR_NAME;
     static const std::string NORMAL_VBO_NAME;
+
+    
 };
 
 } // namespace maguey

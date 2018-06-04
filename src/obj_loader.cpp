@@ -138,8 +138,8 @@ bool ObjLoader::load_data_into_meshes(const std::unordered_map<std::string, inte
             faces.push_back(glm::uvec3(start_vertices, start_vertices+1, start_vertices+2));
         }
 
-        meshes.insert({data_pair.first, new TriangleMesh(vertices, normals, faces)});
-        meshes[data_pair.first]->load(camera, vertexShader, geometryShader, fragmentShader);
+        meshes.insert({data_pair.first, new TriangleMesh(vertices, normals, faces, vertexShader, geometryShader, fragmentShader)});
+        meshes[data_pair.first]->load(camera);
     }
 
     return true;

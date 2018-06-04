@@ -32,15 +32,20 @@ TriangleMesh::TriangleMesh() { }
 
 TriangleMesh::TriangleMesh(const std::vector<glm::vec4>& vertices,
                            const std::vector<glm::vec4>& normals,
-                           const std::vector<glm::uvec3>& faces)
-        : vertices(vertices), normals(normals), faces(faces) { }
+                           const std::vector<glm::uvec3>& faces,
+                           const Shader& vertexShader,
+                           const Shader& geometryShader,
+                           const Shader& fragmentShader)
+        : vertices(vertices), normals(normals), faces(faces),
+          vertexShader(vertexShader), geometryShader(geometryShader),
+          fragmentShader(fragmentShader)
+           { }
 
-void TriangleMesh::load(Camera& camera, const Shader& vertexShader, const Shader& geometryShader, const Shader& fragmentShader) {
-    loadImpl(camera, vertexShader, geometryShader, fragmentShader);
+void TriangleMesh::load(Camera& camera) {
+    loadImpl(camera);
 }
 
-void TriangleMesh::loadImpl(Camera& camera, 
-                            const Shader &vertexShader, const Shader &geometryShader, const Shader &fragmentShader) {
+void TriangleMesh::loadImpl(Camera& camera) {
     // Set default model position
     this->forward = glm::vec3(1.0f, 0.0f, 0.0f);
     this->up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -65,9 +70,9 @@ void TriangleMesh::loadImpl(Camera& camera,
     vbo.resize(3);
     CHECK_GL_ERROR(glGenBuffers(3, vbo.data()));
 
-
-    program = Program(uniforms, vertexShader, geometryShader, fragmentShader);
-    GLint programId = program.getProgramId();
+    this->program = Program(uniforms, vertexShader, geometryShader, fragmentShader);
+    this->program.compile();
+    GLint programId = this->program.getProgramId();
 
     // Bind vertices
     GLuint verticesPosition = 0;
@@ -90,14 +95,14 @@ void TriangleMesh::loadImpl(Camera& camera,
     CHECK_GL_ERROR(glBindFragDataLocation(programId, 0, FRAGMENT_COLOR_NAME.c_str()));
 
     // Link the program
-    program.link();
+    this->program.link();
 
     // Add the index (aka the faces)
     CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[2]));
     CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(glm::uvec3) * this->faces.size(), this->faces.data(), GL_STATIC_DRAW));
 
     // Add uniform locations
-    program.addUniformLocations();
+    this->program.addUniformLocations();
 
 }
 
