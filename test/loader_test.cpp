@@ -106,7 +106,7 @@ void comparison_test(const std::string& file,
     bool error;
 
     std::unordered_map<std::string, maguey::TriangleMesh*> mesh_map = loader.loadString(file, error);
-    ASSERT_TRUE(error);
+    ASSERT_FALSE(error);
 
     std::vector<std::string> mesh_keys(mesh_map.size()), true_vert_keys(true_verts.size()),
                              true_normal_keys(true_normals.size()), true_face_keys(true_faces.size());
